@@ -1,0 +1,9 @@
+/*
+ * Copyright (c) 2018 VMINGER Co., Ltd. All rights reserved.
+ */
+
+package com.vminger.prophet.issue.constant;
+
+public class IssueConstant {
+	public final static String SCHEMA_ISSUE_IN_TEXT_PATH = "jsonschema/issues-in-text.json";
+}

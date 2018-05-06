@@ -1,0 +1,84 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"issues_in_text": {
+			"type": "object",
+			"properties": {
+				"ctxs": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"ctx_id": {
+								"type": "string", "format": "uuid"
+							},
+							"ctx": {
+								"type": "string", "format": "ctx"
+							}
+						},
+						"required":["ctx_id", "ctx"],
+						"additionalProperties": false
+					}
+				},
+				"issues": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"ctx_id": {
+								"type": "string", "format": "uuid"
+							},
+							"issue_id": {
+								"type": "string", "format": "uuid"
+							},
+							"issue_topic": {
+								"type": "string"
+							},
+							"issue_k12n": {
+								"type": "string",
+								"enum": ["010", "011", "020", "021", "030", "031", "040", "041", "050", "051", "060", "061"]
+							},
+							"issue_subject": {
+								"type": "string",
+								"enum": ["chn", "math", "eng"]
+							},
+							"issue_dod": {
+								"type": "number",
+								"minimum": 0,
+								"maximum": 100
+							},
+							"issue_type": {
+								"type": "string", "format": "uuid",
+								"enum": ["mono", "multi", "fill", "judg", "qa", "no_answer"]
+							},
+							"issue_qa": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"option": {
+											"type": "string"
+										},
+										"is_answer": {
+											"type": "boolean"
+										}
+									},
+									"required":["option", "is_answer"]
+								}
+							}
+						},
+						"required":["issue_id", "issue_topic", "issue_k12n", "issue_subject", "issue_type", "issue_qa"],
+						"additionalProperties": false
+					},
+					"minItems": 1,
+					"uniqueItems": true
+				}
+			},
+			"required":["ctxs", "issues"],
+			"additionalProperties": false
+		}
+	},
+	"required":["issues_in_text"],
+	"additionalProperties": false
+}
