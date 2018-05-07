@@ -4,6 +4,9 @@
 
 package com.vminger.prophet.issue.constant;
 
+import java.util.Properties;
+
 public class IssueConstant {
-	public final static String SCHEMA_ISSUE_IN_TEXT_PATH = "jsonschema/issues-in-text.json";
+	Properties prop = new Properties(); 
+	public final static String SCHEMA_ISSUE_IN_TEXT_PATH = "/etc/prophet/jsonschema/schema-issues-in-text.json";
 }
