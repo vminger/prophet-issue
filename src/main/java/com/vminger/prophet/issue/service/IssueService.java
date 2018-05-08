@@ -4,10 +4,8 @@
 
 package com.vminger.prophet.issue.service;
 
-public class IssueService {
+public interface IssueService {
 
-	public String addIssue(String issues) {
-		return issues;
-	}
+	public String addIssue(String issues);
 	
 }
