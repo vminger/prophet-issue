@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
 public class IssueEntity implements Serializable {
 
 	private static final long serialVersionUID = -748388722236389944L;
@@ -26,6 +29,10 @@ public class IssueEntity implements Serializable {
 	private float dod;
 	private Map<String, Boolean> qas = new HashMap<String, Boolean>();
 	private List<String> tags = new LinkedList<String>();
+	
+	public IssueEntity() {
+		
+	}
 	
 	public IssueEntity(String id, String topic, String k12n, String subject,
 			String type, String created_at, String updated_at,

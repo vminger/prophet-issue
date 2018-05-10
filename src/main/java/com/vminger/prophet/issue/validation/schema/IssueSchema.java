@@ -5,5 +5,5 @@
 package com.vminger.prophet.issue.validation.schema;
 
 public class IssueSchema {
-	public static final String IssueSchema = "";
+	// TODO
 }

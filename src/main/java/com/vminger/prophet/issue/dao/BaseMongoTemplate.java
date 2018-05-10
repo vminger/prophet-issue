@@ -4,19 +4,17 @@
 
 package com.vminger.prophet.issue.dao;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 public class BaseMongoTemplate {
 	
+	@Autowired
 	protected MongoTemplate template;
 	
+	@Autowired
 	public void setMongoTemplate(MongoTemplate template) {
 		this.template = template;
 	}
 	
-	public void setApplicationContext(ApplicationContext context) {
-		MongoTemplate template = context.getBean("mongoTemplate", MongoTemplate.class);
-		setMongoTemplate(template);
-	}
 }
