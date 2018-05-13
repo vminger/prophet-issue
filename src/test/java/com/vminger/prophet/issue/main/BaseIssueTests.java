@@ -3,7 +3,7 @@
  */
 
 
-package com.vminger.prophet.issue;
+package com.vminger.prophet.issue.main;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,22 +13,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes=BaseIssueTests.class)
 public class BaseIssueTests {
 
-	@BeforeClass
-	public static void testBeforeClass() {
-		
-	}
-	
-	@Test
-	public void testBaseIssue() {
-		
-	}
-	
-	@AfterClass
-	public static void testAfterClass() {
-		
-	}
-	
+  @BeforeClass
+  public static void testBeforeClass() {
+  }
+
+  @Test
+  public void testBaseIssue() {
+  }
+
+  @AfterClass
+  public static void testAfterClass() {
+  }
+
 }

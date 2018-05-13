@@ -4,17 +4,17 @@
 
 package com.vminger.prophet.issue.validation;
 
-import java.io.IOException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
+
+import java.io.IOException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Json schema validation for Issues.
@@ -23,18 +23,18 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
  *
  */
 public class IssueJsonSchemaValidator {
-	
-	private static final Logger LOGGER = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
-	private static final JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
-	
-	/**
-	 * Json schema validation by schema and instance json document.
-	 * @param schema schema json document
-	 * @param instance instance json document
-	 * @return report ProcessingReport
-	 * @throws IOException
-	 * @throws ProcessingException
-	 */
+
+  private static final Logger LOGGER = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+  private static final JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
+
+ /**
+  * Json schema validation by schema and instance json document.
+  * @param schema schema json document
+  * @param instance instance json document
+  * @return report ProcessingReport
+  * @throws IOException IOException
+  * @throws ProcessingException ProcessingException
+  */
 	public static ProcessingReport validateByJson(String schema, String instance) throws IOException, ProcessingException {
 		LOGGER.debug("Start to validateByJson, schema = " + schema + ", json = " + instance);
 		JsonNode schemaNode = JsonLoader.fromString(schema);

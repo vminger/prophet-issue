@@ -4,7 +4,8 @@
 
 package com.vminger.prophet.issue.controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,27 +25,27 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.vminger.prophet.issue.BaseIssueTests;
+import com.vminger.prophet.issue.main.BaseIssueTests;
 import com.vminger.prophet.issue.service.IssueService;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes=IssueControllerTests.class)
 public class IssueControllerTests extends BaseIssueTests {
-	
-	private MockMvc mockMvc;
-	
-	@Mock
-	private IssueService service;
-	
-	@InjectMocks
-	private IssueController controller;
-	
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-	}
-	
+
+  private MockMvc mockMvc;
+
+  @Mock
+  private IssueService service;
+
+  @InjectMocks
+  private IssueController controller;
+
+  @Before
+  public void setUp() {
+    MockitoAnnotations.initMocks(this);
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+  }
+
 	/**
 	 * Add issue with correct json instance.
 	 * @throws Exception
@@ -89,7 +90,7 @@ public class IssueControllerTests extends BaseIssueTests {
 		"    } " +
 		"}";
 	
-		when(service.addIssue(issues)).thenReturn(issues);
+		when(service.addIssues(issues)).thenReturn(issues);
 		
 		mockMvc.perform(post("/v1.0/issues")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -100,13 +101,13 @@ public class IssueControllerTests extends BaseIssueTests {
 				.andDo(print())
 				.andReturn();
 		
-		verify(service, timeout(1)).addIssue(issues);
+		verify(service, times(1)).addIssues(issues);
 	}
 	
 	public void testAddIssueWithBadJsonInstance1() throws Exception {
 		String issues = "{\"test\":\"test1\"}";
 		
-		when(service.addIssue(issues)).thenReturn(issues);
+		when(service.addIssues(issues)).thenReturn(issues);
 		
 		mockMvc.perform(post("/v1.0/issues")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -116,13 +117,13 @@ public class IssueControllerTests extends BaseIssueTests {
 				.andDo(print())
 				.andReturn();
 		
-		verify(service, timeout(1)).addIssue(issues);
+		verify(service, times(1)).addIssues(issues);
 	}
 	
 	public void testAddIssueWithBadJsonInstance2() throws Exception {
 		String issues = "test";
 		
-		when(service.addIssue(issues)).thenReturn(issues);
+		when(service.addIssues(issues)).thenReturn(issues);
 		
 		mockMvc.perform(post("/v1.0/issues")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -132,7 +133,7 @@ public class IssueControllerTests extends BaseIssueTests {
 				.andDo(print())
 				.andReturn();
 		
-		verify(service, timeout(1)).addIssue(issues);
+		verify(service, times(1)).addIssues(issues);
 	}
 	
 	public void testAddIssueWithBadRequestHeader1() throws Exception {
@@ -174,7 +175,7 @@ public class IssueControllerTests extends BaseIssueTests {
 		"    } " +
 		"}";
 		
-		when(service.addIssue(issues)).thenReturn(issues);
+		when(service.addIssues(issues)).thenReturn(issues);
 		
 		mockMvc.perform(post("/v1.0/issues")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -184,7 +185,7 @@ public class IssueControllerTests extends BaseIssueTests {
 				.andDo(print())
 				.andReturn();
 		
-		verify(service, timeout(1)).addIssue(issues);
+		verify(service, times(1)).addIssues(issues);
 	}
 	
 	@After

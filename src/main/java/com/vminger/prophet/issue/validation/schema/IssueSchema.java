@@ -5,5 +5,5 @@
 package com.vminger.prophet.issue.validation.schema;
 
 public class IssueSchema {
-	// TODO
+    // TODO: json schema is in file.
 }

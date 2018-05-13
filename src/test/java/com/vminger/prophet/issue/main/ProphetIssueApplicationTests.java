@@ -2,7 +2,7 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue;
+package com.vminger.prophet.issue.main;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

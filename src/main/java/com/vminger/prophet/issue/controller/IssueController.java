@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,42 +27,50 @@ import com.vminger.prophet.issue.validation.IssueJsonSchemaValidator;
 @RestController
 @RequestMapping("/v1.0/issues")
 public class IssueController {
-	
-	private static final Logger logger = LogManager.getLogger(IssueController.class);
-	
-	private IssueService service = null;
-	
-	@RequestMapping(method = RequestMethod.POST,
-					consumes="application/json;charset=UTF-8",
-					produces="application/json;charset=UTF-8")
-	@ResponseBody
-	public String addIssue(@RequestBody String issues)
-			throws IssueBadJsonException,
-				IssueProcessingException,
-				IssueIOException {
-		
-		try {
-			logger.warn(issues);
-			ProcessingReport report = IssueJsonSchemaValidator.validateByPath(
-					IssueConstant.SCHEMA_ISSUE_IN_TEXT_PATH,
-					issues);
-			if(!report.isSuccess()) {
-				logger.warn(report);
-				throw new IssueBadJsonException();
-			}
-		} catch (ProcessingException ex) {
-			logger.warn(ex.getStackTrace());
-			throw new IssueProcessingException();
-		} catch (IOException ex) {
-			logger.warn(ex.getStackTrace());
-			throw new IssueIOException();
-		}
-		
-		logger.info(issues);
-		
-		String result = service.addIssue(issues);
-		
-		return result;
-		
-	}
+
+  private static final Logger logger = LogManager.getLogger(IssueController.class);
+
+  @Autowired
+  private IssueService service;
+
+  /**
+   * Add issues controller.
+   * @param issues issue json instance
+   * @return no return value
+   * @throws IssueBadJsonException 4xx bad code
+   * @throws IssueProcessingException 4xx bad code
+   * @throws IssueIOException 5xx bad code
+   */
+  @RequestMapping(method = RequestMethod.POST,
+      consumes = "application/json;charset=UTF-8",
+      produces = "application/json;charset=UTF-8")
+  @ResponseBody
+  public String addIssues(@RequestBody String issues)
+      throws IssueBadJsonException, 
+      IssueProcessingException,
+      IssueIOException {
+
+    try {
+      logger.warn(issues);
+      ProcessingReport report = IssueJsonSchemaValidator.validateByPath(
+          IssueConstant.SCHEMA_ISSUE_IN_TEXT_PATH, issues);
+      if (!report.isSuccess()) {
+        logger.warn(report);
+        throw new IssueBadJsonException();
+      }
+    } catch (ProcessingException ex) {
+      logger.warn(ex.getStackTrace());
+      throw new IssueProcessingException();
+    } catch (IOException ex) {
+      logger.warn(ex.getStackTrace());
+      throw new IssueIOException();
+    }
+
+    logger.info(issues);
+
+    String result = service.addIssues(issues);
+
+    return result;
+
+  }
 }
