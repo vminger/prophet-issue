@@ -20,19 +20,20 @@ public class IssueEntity implements Serializable {
   private String id;
   private String context;
   private String question;
-  private Map<String, Boolean> options = new HashMap<String, Boolean>();
+  private Map<String, String> options;
   private String k12n;
   private String subject;
   private String type;
   private float dod;
-  private List<String> relatedIssues = new LinkedList<String>();
+  private List<String> relatedIssues;
   private String createdAt;
   private String updatedAt;
   private String userId;
   private String fromUrl;
-  private List<String> tags = new LinkedList<String>();
+  private List<String> tags;
 
   public IssueEntity() {
+    tags = new LinkedList<String>();
   }
 
   /**
@@ -50,11 +51,10 @@ public class IssueEntity implements Serializable {
    * @param fromUrl 爬虫爬取的原始url，user_id和url二选一
    * @param dod 0-100，n表示有n%的人不会做，数值越大，难度越大
    * @param relatedIssues related issues for cloze test
-   * @param tags auto generated tags for issue entity
    */
-  public IssueEntity(String id, String context, String question, Map<String, Boolean> options,
+  public IssueEntity(String id, String context, String question, Map<String, String> options,
       String k12n, String subject, String type, float dod, List<String> relatedIssues,
-      String createdAt, String updatedAt, String userId, String fromUrl, List<String> tags) {
+      String createdAt, String updatedAt, String userId, String fromUrl) {
     super();
     this.id = id;
     this.context = context;
@@ -69,7 +69,6 @@ public class IssueEntity implements Serializable {
     this.updatedAt = updatedAt;
     this.userId = userId;
     this.fromUrl = fromUrl;
-    this.tags = tags;
   }
 
   public String getId() {
@@ -96,11 +95,11 @@ public class IssueEntity implements Serializable {
     this.question = question;
   }
   
-  public Map<String, Boolean> getOptions() {
+  public Map<String, String> getOptions() {
     return options;
   }
   
-  public void setQas(Map<String, Boolean> options) {
+  public void setOptions(Map<String, String> options) {
     this.options = options;
   }
     
@@ -175,13 +174,12 @@ public class IssueEntity implements Serializable {
   public void setFromUrl(String fromUrl) {
     this.fromUrl = fromUrl;
   }
-  
-  public List<String> getTags() {
-    return tags;
-  }
-  
-  public void setTags(List<String> tags) {
-    this.tags = tags;
-  }
  
+  public void addTag(String tag) {
+    tags.add(tag);
+  }
+  
+  public void delTag(String tag) {
+    tags.remove(tag);
+  }
 }
