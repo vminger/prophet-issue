@@ -4,19 +4,15 @@
 
 package com.vminger.prophet.issue.service;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.vminger.prophet.issue.dao.IssueDaoImpl;
 import com.vminger.prophet.issue.entity.IssueEntity;
 import com.vminger.prophet.issue.factory.IssueFactory;
 
+@Service("issueServiceImpl")
 public class IssueServiceImpl implements IssueService {
-
-  @Autowired
-  private IssueFactory issueFactory;
   
   @Autowired
   private IssueDaoImpl issueDaoImpl;
@@ -26,12 +22,13 @@ public class IssueServiceImpl implements IssueService {
    * @author VMINGER
    * @param issues issue json instance.
    */
-  public String addIssues(String issues) {   
-    List<IssueEntity> issueEntities = issueFactory.factoryIssues(issues);
-    Iterator<IssueEntity> iterator = issueEntities.iterator();
-    while (iterator.hasNext()) {
-      issueDaoImpl.insert(iterator.next());
-    }
+  public String addIssues(String issues) {
+    IssueFactory issueFactory = new IssueFactory();
+    IssueEntity issueEntity;
+    
+    issueEntity = issueFactory.factoryIssue(issues);
+    issueDaoImpl.insert(issueEntity);
+    
     return issues;
   }
 

@@ -35,7 +35,39 @@ public class IssueServiceImplTests {
 
   @Test
   public void testAddIssue() throws Exception {
-    String issues = "test";
+    String issues = ""
+        + "{\n"
+        + "  \"issues_in_text\": {\n"
+        + "    \"context\": \"vimger test context\",\n"
+        + "    \"k12n\": \"000\",\n"
+        + "    \"subject\": \"000\",\n"
+        + "    \"dod\": 60,\n"
+        + "    \"type\": \"000\",\n"
+        + "    \"qas\": [\n"
+        + "      {\n"
+        + "        \"question\": \"which one is right?\",\n"
+        + "        \"options\": [\n"
+        + "          {\n"
+        + "            \"option\": \"A. 1+1=1\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"B. 1+1=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"C. 2+2=2\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"D. 2+2=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          }\n"
+        + "        ]\n"
+        + "      }\n"
+        + "    ]\n"
+        + "  }\n"
+        + "}";
     
     String ret = issueServiceImpl.addIssues(issues);
     

@@ -5,31 +5,46 @@
 package com.vminger.prophet.issue.entity;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Configuration
+@Document(collection = "issue_entity")
 public class IssueEntity implements Serializable {
 
   private static final long serialVersionUID = -748388722236389944L;
   
-  private String id;
+  @Id
+  private String contextId;
+  @Field("context")
   private String context;
-  private String question;
-  private Map<String, String> options;
+  @Field("k12n")
   private String k12n;
+  @Field("subject")
   private String subject;
-  private String type;
+  @Field("dod")
   private float dod;
-  private List<String> relatedIssues;
+  @Field("type")
+  private String type;
+  @Field("qas_question")
+  private Map<String, String> qasQuestion;
+  @Field("qas_options")
+  private Map<String, Map<String, String>> qasOptions;
+  @Field("create_at")
   private String createdAt;
+  @Field("update_at")
   private String updatedAt;
+  @Field("user_id")
   private String userId;
+  @Field("from_url")
   private String fromUrl;
+  @Field("tags")
   private List<String> tags;
 
   public IssueEntity() {
@@ -38,45 +53,44 @@ public class IssueEntity implements Serializable {
 
   /**
    * Issue Entity.
-   * @param id uuid4 for issue entity
+   * @param contextId uuid4 for issue entity
    * @param context context for issue entity
-   * @param question question for issue entity
-   * @param options options and answers for issue entity
-   * @param k12n 010-1年级上学期,011-1年级下学期
-   * @param subject chn-语文,math-数学
-   * @param type mono-单选,multi-多选
+   * @param k12n 010-1年级上学期, 011-1年级下学期
+   * @param subject 000-语文, 001-数学
+   * @param type 000-单选, 001-多选
+   * @param qasQuestion question
+   * @param qasOptions options and answers
    * @param createdAt created time
    * @param updatedAt updated time
    * @param userId uuid4 for user
    * @param fromUrl 爬虫爬取的原始url，user_id和url二选一
    * @param dod 0-100，n表示有n%的人不会做，数值越大，难度越大
-   * @param relatedIssues related issues for cloze test
    */
-  public IssueEntity(String id, String context, String question, Map<String, String> options,
-      String k12n, String subject, String type, float dod, List<String> relatedIssues,
-      String createdAt, String updatedAt, String userId, String fromUrl) {
+  public IssueEntity(String contextId, String context, String k12n,
+      String subject, float dod, String type, Map<String, String> qasQuestion,
+      Map<String, Map<String, String>> qasOptions, String createdAt,
+      String updatedAt, String userId, String fromUrl) {
     super();
-    this.id = id;
+    this.contextId = contextId;
     this.context = context;
-    this.question = question;
-    this.options = options;
     this.k12n = k12n;
     this.subject = subject;
-    this.type = type;
     this.dod = dod;
-    this.relatedIssues = relatedIssues;
+    this.type = type;
+    this.qasQuestion = qasQuestion;
+    this.qasOptions = qasOptions;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.userId = userId;
     this.fromUrl = fromUrl;
   }
 
-  public String getId() {
-    return id;
+  public String getContextId() {
+    return contextId;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setContextId(String contextId) {
+    this.contextId = contextId;
   }
 
   public String getContext() {
@@ -86,23 +100,7 @@ public class IssueEntity implements Serializable {
   public void setContext(String context) {
     this.context = context;
   }
-
-  public String getQuestion() {
-    return question;
-  }
   
-  public void setQuestion(String question) {
-    this.question = question;
-  }
-  
-  public Map<String, String> getOptions() {
-    return options;
-  }
-  
-  public void setOptions(Map<String, String> options) {
-    this.options = options;
-  }
-    
   public String getK12n() {
     return k12n;
   }
@@ -119,14 +117,6 @@ public class IssueEntity implements Serializable {
     this.subject = subject;
   }
   
-  public String getType() {
-    return type;
-  }
-  
-  public void setType(String type) {
-    this.type = type;
-  }
-  
   public float getDod() {
     return dod;
   }
@@ -134,13 +124,29 @@ public class IssueEntity implements Serializable {
   public void setDod(float dod) {
     this.dod = dod;
   }
-
-  public List<String> getRelatedIssues() {
-    return relatedIssues;
+  
+  public String getType() {
+    return type;
   }
   
-  public void setRelatedIssues(List<String> relatedIssues) {
-    this.relatedIssues = relatedIssues;
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public Map<String, String> getQasQuestion() {
+    return qasQuestion;
+  }
+  
+  public void setQasQuestion(Map<String, String> qasQuestion) {
+    this.qasQuestion = qasQuestion;
+  }
+  
+  public Map<String, Map<String, String>> getQasOptions() {
+    return qasOptions;
+  }
+  
+  public void setQasOptions(Map<String, Map<String, String>> qasOptions) {
+    this.qasOptions = qasOptions;
   }
 
   public String getCreatedAt() {
