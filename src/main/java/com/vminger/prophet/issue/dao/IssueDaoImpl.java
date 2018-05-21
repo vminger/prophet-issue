@@ -6,10 +6,18 @@ package com.vminger.prophet.issue.dao;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Repository;
+
 import com.vminger.prophet.issue.entity.IssueEntity;
 
-public class IssueDaoImpl extends BaseMongoTemplate implements IssueDao {
-
+@Repository
+public class IssueDaoImpl implements IssueDao {
+  
+  @Autowired
+  private MongoTemplate template;
+  
   @Override
   public void insert(IssueEntity issue) {
     // TODO Auto-generated method stub

@@ -3,7 +3,7 @@
  */
 
 
-package com.vminger.prophet.issue.main;
+package com.vminger.prophet.issue;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

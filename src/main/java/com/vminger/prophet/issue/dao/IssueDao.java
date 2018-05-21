@@ -6,8 +6,11 @@ package com.vminger.prophet.issue.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.vminger.prophet.issue.entity.IssueEntity;
 
+@Component
 public interface IssueDao {
 
   /**

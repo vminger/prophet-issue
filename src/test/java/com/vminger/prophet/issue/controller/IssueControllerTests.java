@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.vminger.prophet.issue.main.BaseIssueTests;
+import com.vminger.prophet.issue.BaseIssueTests;
 import com.vminger.prophet.issue.service.IssueService;
 
 @RunWith(SpringRunner.class)
