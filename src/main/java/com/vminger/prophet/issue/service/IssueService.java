@@ -7,5 +7,7 @@ package com.vminger.prophet.issue.service;
 public interface IssueService {
 
   public String addIssues(String issues);
+  
+  public String listAllIssues();
 
 }

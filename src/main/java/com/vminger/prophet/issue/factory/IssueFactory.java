@@ -11,11 +11,13 @@ import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
 import com.vminger.prophet.issue.entity.IssueEntity;
 import com.vminger.prophet.issue.recomend.TagFactory;
 import com.vminger.prophet.issue.util.UniDatetime;
 
+@Component
 public class IssueFactory {
 
   public IssueFactory() {  
@@ -62,6 +64,8 @@ public class IssueFactory {
       JSONObject jsonQa = jsonQas.getJSONObject(i);
       
       String questionId = UUID.randomUUID().toString();
+      questionId.replace(".", "^_$");
+      
       String question = jsonQa.getString("question");
       qasQuestion.put(questionId, question);
       
@@ -70,6 +74,7 @@ public class IssueFactory {
       for (int j = 0; j < jsonOptions.length(); j++) {
         JSONObject jsonOption = jsonOptions.getJSONObject(j);
         String option = jsonOption.getString("option");
+        option = option.replace(".", "^_$");
         String answer = jsonOption.getString("answer");
         options.put(option, answer);
       }
@@ -90,5 +95,22 @@ public class IssueFactory {
     }
     
     return issueEntity;
+  }
+  
+  /**
+   * Covert issue entity to string.
+   * @param issueEntities issue entities
+   * @return issue entities json
+   */
+  public String issuesToString(List<IssueEntity> issueEntities) {
+    String jsons = "";
+    
+    for (int i = 0; i < issueEntities.size(); i++) {
+      IssueEntity issueEntity = issueEntities.get(i);
+      String json = issueEntity.toString();
+      jsons += json;
+    }
+    
+    return jsons;
   }
 }
