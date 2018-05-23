@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class BaseIssueTests {
 
   @BeforeClass
-  public static void testBeforeClass() {
+  public static void beforeClass() {
   }
 
   @Test
@@ -25,7 +25,7 @@ public class BaseIssueTests {
   }
 
   @AfterClass
-  public static void testAfterClass() {
+  public static void afterClass() {
   }
 
 }

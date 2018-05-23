@@ -7,6 +7,7 @@ package com.vminger.prophet.issue.controller;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,6 +42,9 @@ public class IssueControllerTests extends BaseIssueTests {
 
   @Mock
   private IssueService service;
+  
+  @Mock
+  private IssueViewer issueViewer;
 
   @InjectMocks
   private IssueController controller;
@@ -109,6 +113,7 @@ public class IssueControllerTests extends BaseIssueTests {
    * Add issue with bad json instance.
    * @throws Exception exception
    */
+  @Test
   public void testAddIssueWithBadJsonInstance1() throws Exception {
     String issues = "{\"test\":\"test1\"}";
 
@@ -122,13 +127,14 @@ public class IssueControllerTests extends BaseIssueTests {
       .andDo(print())
       .andReturn();
 
-    verify(service, times(1)).addIssues(issues);
+    verify(service, times(0)).addIssues(issues);
   }
 
   /**
    * Add issue with bad json instance.
    * @throws Exception exception
    */
+  @Test
   public void testAddIssueWithBadJsonInstance2() throws Exception {
     String issues = "test";
 
@@ -138,17 +144,18 @@ public class IssueControllerTests extends BaseIssueTests {
           .accept(MediaType.APPLICATION_JSON_UTF8)
           .contentType(MediaType.APPLICATION_JSON_UTF8)
           .content(issues))
-      .andExpect(status().is4xxClientError())
+      .andExpect(status().is5xxServerError())
       .andDo(print())
       .andReturn();
 
-    verify(service, times(1)).addIssues(issues);
+    verify(service, times(0)).addIssues(issues);
   }
 
   /**
    * Add issue with bad request header.
    * @throws Exception exception
    */
+  @Test
   public void testAddIssueWithBadRequestHeader1() throws Exception {
     String issues = ""
         + "{\n"
@@ -194,19 +201,20 @@ public class IssueControllerTests extends BaseIssueTests {
       .andDo(print())
       .andReturn();
 
-    verify(service, times(1)).addIssues(issues);
+    verify(service, times(0)).addIssues(issues);
   }
   
   @Test
   public void testListAllIssues() throws Exception {
     String result = "test";
-    String viewer = ""
+    String expected = ""
         + "{"
         + "  \"issues_in_text\": {"
         + result
         + "}";
     
     when(service.listAllIssues()).thenReturn(result);
+    when(issueViewer.listAllIssuesViewer(result)).thenReturn(expected);
     
     MvcResult mvcResult = mockMvc.perform(get("/v1.0/issues"))
         .andExpect(status().isOk())
@@ -214,8 +222,9 @@ public class IssueControllerTests extends BaseIssueTests {
         .andReturn();
     
     verify(service, times(1)).listAllIssues();
+    verify(issueViewer,times(1)).listAllIssuesViewer(result);
     
-    assertEquals(viewer, mvcResult.toString());
+    assertEquals(expected, mvcResult.getResponse().getContentAsString());
   }
 
   @After

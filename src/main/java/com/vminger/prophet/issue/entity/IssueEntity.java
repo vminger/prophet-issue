@@ -186,4 +186,14 @@ public class IssueEntity implements Serializable {
   public void delTag(String tag) {
     tags.remove(tag);
   }
+  
+  @Override
+  public String toString() {
+    String result = ""
+        + "{"
+        + "\"context_id\":" + contextId
+        + "\"context\":" + context
+        + "}";
+    return result;
+  }
 }

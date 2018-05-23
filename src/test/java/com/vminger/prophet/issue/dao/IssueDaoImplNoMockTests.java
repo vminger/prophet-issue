@@ -4,6 +4,8 @@
 
 package com.vminger.prophet.issue.dao;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +32,7 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
   IssueFactory issueFactory;
   
   @Before
-  public void setUp() {
-    //issueDao = new IssueDaoImpl();
+  public void before() {
   }
   
   @Test
@@ -81,8 +82,15 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
     issueDao.insert(issueEntity);
   }
   
+  @Test
+  public void testListAllIssues() throws Exception {
+    
+    List<IssueEntity> actual = issueDao.listAllIssues();
+    
+  }
+  
   @After
-  public void tearDown() {
+  public void after() {
   }
   
 }

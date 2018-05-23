@@ -24,10 +24,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.entity.IssueEntity;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = IssueDaoImplTests.class)
+@SpringBootTest(classes = ProphetIssueApplication.class)
 public class IssueDaoImplTests {
 
   @Mock
@@ -83,8 +84,25 @@ public class IssueDaoImplTests {
   @Test
   public void testFindByUserId() throws Exception {
     String userId = "85fd2f86-be41-4bd7-b34b-7139e90e1ad1";
+    
     List<IssueEntity> issueEntities = issueDaoImpl.findByUserId(userId);
+    
     assertEquals(issueEntities, null);
+  }
+  
+  @Test
+  public void testListAllIssues() throws Exception {
+    List<IssueEntity> expected = new LinkedList<IssueEntity>();
+    IssueEntity issueEntity = new IssueEntity();
+    issueEntity.setContextId("f597e7aa-bae8-407b-a77c-9dd0a09d7a72");
+    issueEntity.setContext("test context");
+    expected.add(issueEntity);
+    
+    when(template.findAll(IssueEntity.class)).thenReturn(expected);
+    
+    List<IssueEntity> actual = issueDaoImpl.listAllIssues();
+    
+    assertEquals(expected, actual);
   }
   
   @After

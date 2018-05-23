@@ -5,6 +5,12 @@
 package com.vminger.prophet.issue.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,23 +23,33 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
+import com.vminger.prophet.issue.dao.IssueDao;
 import com.vminger.prophet.issue.dao.IssueDaoImpl;
+import com.vminger.prophet.issue.entity.IssueEntity;
+import com.vminger.prophet.issue.factory.IssueFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
 public class IssueServiceImplTests {
 
   @Mock
-  IssueDaoImpl issueDaoImpl;
+  IssueDao issueDao;
 
+  @Mock
+  IssueFactory issueFactory;
+  
   @InjectMocks
   IssueServiceImpl issueServiceImpl;
 
   @Before
-  public void setUp() {
+  public void before() {
     MockitoAnnotations.initMocks(this);
   }
 
+  @After
+  public void after() {
+  }
+  
   @Test
   public void testAddIssue() throws Exception {
     String issues = ""
@@ -70,13 +86,35 @@ public class IssueServiceImplTests {
         + "  }\n"
         + "}";
     
-    String ret = issueServiceImpl.addIssues(issues);
+    IssueEntity issueEntity = new IssueEntity();
+    when(issueFactory.factoryIssue(issues)).thenReturn(issueEntity);
     
-    assertEquals(issues, ret);
+    String actual = issueServiceImpl.addIssues(issues);
+    
+    verify(issueFactory, times(1)).factoryIssue(issues);
+    
+    assertEquals(issues, actual);
+  }
+  
+  @Test
+  public void testListAllIssues() throws Exception {
+    List<IssueEntity> issueEntities = new LinkedList<IssueEntity>();
+    IssueEntity issueEntity = new IssueEntity();
+    issueEntity.setContextId("f597e7aa-bae8-407b-a77c-9dd0a09d7a72");
+    issueEntity.setContext("test context");
+    issueEntities.add(issueEntity);
+    
+    String expected = ""
+        + "{"
+        + "\"context_id\":" + issueEntity.getContextId()
+        + "\"context\":" + issueEntity.getContext()
+        + "}";
+    
+    when(issueDao.listAllIssues()).thenReturn(issueEntities);
+    when(issueFactory.issuesToString(issueEntities)).thenReturn(expected);
+    String actual = issueServiceImpl.listAllIssues();
+    
+    assertEquals(expected, actual);
   }
 
-  @After
-  public void tearDown() {
-  
-  }
 }

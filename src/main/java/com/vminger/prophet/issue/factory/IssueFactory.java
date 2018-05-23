@@ -19,9 +19,6 @@ import com.vminger.prophet.issue.util.UniDatetime;
 
 @Component
 public class IssueFactory {
-
-  public IssueFactory() {  
-  }
   
   /**
    * Build issue entity from issue json instance.
@@ -103,13 +100,16 @@ public class IssueFactory {
    * @return issue entities json
    */
   public String issuesToString(List<IssueEntity> issueEntities) {
-    String jsons = "";
+    String jsons = "[";
     
     for (int i = 0; i < issueEntities.size(); i++) {
       IssueEntity issueEntity = issueEntities.get(i);
       String json = issueEntity.toString();
       jsons += json;
+      jsons += ",";
     }
+    
+    jsons += "]";
     
     return jsons;
   }
