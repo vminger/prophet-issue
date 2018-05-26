@@ -9,9 +9,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.dao.IssueDao;
 import com.vminger.prophet.issue.entity.IssueEntity;
-import com.vminger.prophet.issue.factory.IssueFactory;
 
 @Service("issueServiceImpl")
 public class IssueServiceImpl implements IssueService {
@@ -20,7 +20,7 @@ public class IssueServiceImpl implements IssueService {
   private IssueDao issueDao;
 
   @Autowired
-  IssueFactory issueFactory;
+  IssueConverter issueFactory;
   
   /**
    * Add issue.
@@ -29,7 +29,7 @@ public class IssueServiceImpl implements IssueService {
    */
   public String addIssues(String issues) {
     IssueEntity issueEntity;
-    issueEntity = issueFactory.factoryIssue(issues);
+    issueEntity = issueFactory.createIssueEntityFromJson(issues);
     issueDao.insert(issueEntity);
     
     return issues;
@@ -40,7 +40,7 @@ public class IssueServiceImpl implements IssueService {
    */
   public String listAllIssues() {
     List<IssueEntity> issueEntities = issueDao.listAllIssues();
-    String result = issueFactory.issuesToString(issueEntities);
+    String result = issueFactory.createJsonFromIssueEntity(issueEntities);
     return result;
   }
 

@@ -23,10 +23,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
+import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.dao.IssueDao;
-import com.vminger.prophet.issue.dao.IssueDaoImpl;
 import com.vminger.prophet.issue.entity.IssueEntity;
-import com.vminger.prophet.issue.factory.IssueFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
@@ -36,7 +35,7 @@ public class IssueServiceImplTests {
   IssueDao issueDao;
 
   @Mock
-  IssueFactory issueFactory;
+  IssueConverter issueFactory;
   
   @InjectMocks
   IssueServiceImpl issueServiceImpl;
@@ -87,11 +86,11 @@ public class IssueServiceImplTests {
         + "}";
     
     IssueEntity issueEntity = new IssueEntity();
-    when(issueFactory.factoryIssue(issues)).thenReturn(issueEntity);
+    when(issueFactory.createIssueEntityFromJson(issues)).thenReturn(issueEntity);
     
     String actual = issueServiceImpl.addIssues(issues);
     
-    verify(issueFactory, times(1)).factoryIssue(issues);
+    verify(issueFactory, times(1)).createIssueEntityFromJson(issues);
     
     assertEquals(issues, actual);
   }
@@ -111,7 +110,7 @@ public class IssueServiceImplTests {
         + "}";
     
     when(issueDao.listAllIssues()).thenReturn(issueEntities);
-    when(issueFactory.issuesToString(issueEntities)).thenReturn(expected);
+    when(issueFactory.createJsonFromIssueEntity(issueEntities)).thenReturn(expected);
     String actual = issueServiceImpl.listAllIssues();
     
     assertEquals(expected, actual);

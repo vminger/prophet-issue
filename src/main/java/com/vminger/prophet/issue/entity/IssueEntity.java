@@ -9,12 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "issue_entity")
-public class IssueEntity implements Serializable {
+public class IssueEntity implements Serializable, Comparable<IssueEntity> {
 
   private static final long serialVersionUID = -748388722236389944L;
   
@@ -189,11 +190,50 @@ public class IssueEntity implements Serializable {
   
   @Override
   public String toString() {
-    String result = ""
-        + "{"
-        + "\"context_id\":" + contextId
-        + "\"context\":" + context
+    
+    String jsonQas = "[\n";
+    for (String keyQuestionId : qasQuestion.keySet()) {
+      jsonQas += "{\n";
+      jsonQas += "question_id:" + keyQuestionId + ",\n";
+      jsonQas += "question:" + qasQuestion.get(keyQuestionId) + "\n";
+      jsonQas += "options:[" + "\n";
+      Map<String, String> mapOptions = qasOptions.get(keyQuestionId);
+      for (String keyOption : mapOptions.keySet()) {
+        String valAnswer = mapOptions.get(keyOption);
+        jsonQas += "{\n";
+        jsonQas += "option:" + keyOption + ",\n";
+        jsonQas += "answer:" + valAnswer + "\n";
+        jsonQas += "},\n";
+      }
+      jsonQas += "]},\n";
+    }
+    jsonQas += "]";
+    
+    String jsonTags = "";
+    if (tags != null) {
+      jsonTags = tags.toString();
+    }
+
+    String result = "\n"
+        + "{\n"
+        + "\"context_id\":" + contextId + ",\n"
+        + "\"context\":" + context + ",\n"
+        + "\"k12n\":" + k12n + ",\n"
+        + "\"subject\":" + subject + ",\n"
+        + "\"dod\":" + dod + ",\n"
+        + "\"type\":" + type + ",\n"
+        + "\"qas\":" + jsonQas + ",\n"
+        + "\"created_at\":" + createdAt + ",\n"
+        + "\"updated_at\":" + updatedAt + ",\n"
+        + "\"user_id\":" + userId + ",\n"
+        + "\"from_url\":" + fromUrl + ",\n"
+        + "\"tags\":[" + jsonTags + "]\n"
         + "}";
     return result;
+  }
+
+  @Override
+  public int compareTo(IssueEntity issueEntity) {
+    return contextId.compareTo(issueEntity.getContextId());
   }
 }

@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
+import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.entity.IssueEntity;
-import com.vminger.prophet.issue.factory.IssueFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
@@ -29,7 +29,7 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
   IssueDaoImpl issueDao;
   
   @Autowired
-  IssueFactory issueFactory;
+  IssueConverter issueFactory;
   
   @Before
   public void before() {
@@ -77,7 +77,7 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
         + "  }\n"
         + "}";
     
-    IssueEntity issueEntity = issueFactory.factoryIssue(issueInstance);
+    IssueEntity issueEntity = issueFactory.createIssueEntityFromJson(issueInstance);
     
     issueDao.insert(issueEntity);
   }

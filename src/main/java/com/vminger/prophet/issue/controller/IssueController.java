@@ -38,7 +38,7 @@ public class IssueController {
   private IssueViewer issueViewer;
 
   /**
-   * Add issues controller.
+   * Controller for add issues.
    * @param issues issue json instance
    * @return no return value
    * @throws IssueBadJsonException 4xx bad code
@@ -49,15 +49,17 @@ public class IssueController {
       consumes = "application/json;charset=UTF-8",
       produces = "application/json;charset=UTF-8")
   @ResponseBody
-  public String createIssues(@RequestBody String issues)
+  public String createIssues(@RequestBody String issueInstance)
       throws IssueBadJsonException, 
       IssueProcessingException,
       IssueIOException {
 
+    logger.info("Start to create an issue from json instance");
+    logger.info(issueInstance);
+    
     try {
-      logger.warn(issues);
       ProcessingReport report = IssueJsonSchemaValidator.validateByPath(
-          IssueConstant.SCHEMA_ISSUE_IN_TEXT_PATH, issues);
+          IssueConstant.SCHEMA_ISSUE_IN_TEXT_PATH, issueInstance);
       if (!report.isSuccess()) {
         logger.warn(report);
         throw new IssueBadJsonException();
@@ -70,10 +72,10 @@ public class IssueController {
       throw new IssueIOException();
     }
 
-    logger.info(issues);
+    String result = service.addIssues(issueInstance);
 
-    String result = service.addIssues(issues);
-
+    logger.info("End to create an issue from json instance");
+    
     return result;
 
   }
