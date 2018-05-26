@@ -13,8 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import com.vminger.prophet.issue.entity.IssueEntity;
 import com.vminger.prophet.issue.recomend.TagFactory;
+import com.vminger.prophet.issue.repo.drivers.mongodb.entity.IssueEntityMongo;
 import com.vminger.prophet.issue.util.UniDatetime;
 
 /**
@@ -31,9 +31,9 @@ public class IssueConverter {
    * @param jsonInstance json instance
    * @return issue entity
    */
-  public IssueEntity createIssueEntityFromJson(final String jsonInstance) {
+  public IssueEntityMongo createIssueEntityFromJson(final String jsonInstance) {
 
-    IssueEntity issueEntity = new IssueEntity();
+    IssueEntityMongo issueEntity = new IssueEntityMongo();
 
     JSONObject jsonObject = new JSONObject(jsonInstance);
 
@@ -104,11 +104,11 @@ public class IssueConverter {
    * @param issueEntities issue entities
    * @return json instance
    */
-  public String createJsonFromIssueEntity(final List<IssueEntity> issueEntities) {
+  public String createJsonFromIssueEntity(final List<IssueEntityMongo> issueEntities) {
     String jsons = "[";
 
     for (int i = 0; i < issueEntities.size(); i++) {
-      IssueEntity issueEntity = issueEntities.get(i);
+      IssueEntityMongo issueEntity = issueEntities.get(i);
       String json = issueEntity.toString();
       jsons += json;
       jsons += ",";

@@ -2,54 +2,54 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue.dao;
+package com.vminger.prophet.issue.repo.drivers.mongodb.dao;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.vminger.prophet.issue.entity.IssueEntity;
+import com.vminger.prophet.issue.repo.IssueDao;
+import com.vminger.prophet.issue.repo.drivers.mongodb.entity.IssueEntityMongo;
 
 @Repository
-public class IssueDaoImpl implements IssueDao {
+public class IssueDaoImplMongo implements IssueDao {
   
   @Autowired
   private MongoTemplate template;
   
   @Override
-  public void insert(IssueEntity issue) {
+  public void insert(IssueEntityMongo issue) {
     // TODO Auto-generated method stub
     template.insert(issue);
   }
 
   @Override
-  public void insertAll(List<IssueEntity> issues) {
+  public void insertAll(List<IssueEntityMongo> issues) {
     // TODO Auto-generated method stub
     template.insertAll(issues);
   }
 
   @Override
-  public IssueEntity findById(String id) {
+  public IssueEntityMongo findById(String id) {
     // TODO Auto-generated method stub
-    return template.findById(id, IssueEntity.class);
+    return template.findById(id, IssueEntityMongo.class);
   }
 
   @Override
-  public List<IssueEntity> findByUserId(String userId) {
+  public List<IssueEntityMongo> findByUserId(String userId) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public List<IssueEntity> listAllIssues() {
-    return template.findAll(IssueEntity.class);
+  public List<IssueEntityMongo> listAllIssues() {
+    return template.findAll(IssueEntityMongo.class);
   }
   
   @Override
-  public void delete(IssueEntity issue) {
+  public void delete(IssueEntityMongo issue) {
     // TODO Auto-generated method stub
     template.remove(issue);
   }

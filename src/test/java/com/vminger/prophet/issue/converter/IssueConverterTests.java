@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
-import com.vminger.prophet.issue.entity.IssueEntity;
+import com.vminger.prophet.issue.repo.drivers.mongodb.entity.IssueEntityMongo;
 
 /**
  * Test for IssueConverter.
@@ -88,7 +88,7 @@ public class IssueConverterTests {
         + "  }\n"
         + "}";
     
-    IssueEntity issue = converter.createIssueEntityFromJson(json);
+    IssueEntityMongo issue = converter.createIssueEntityFromJson(json);
     
     assertEquals("vimger test context", issue.getContext());
     assertEquals("000", issue.getK12n());
@@ -103,7 +103,7 @@ public class IssueConverterTests {
    */
   @Test
   public void testCreateJsonFromIssueEntity() throws Exception {
-    List<IssueEntity> issueEntities = new ArrayList<IssueEntity>();
+    List<IssueEntityMongo> issueEntities = new ArrayList<IssueEntityMongo>();
     
     String json1 = ""
         + "{\n"
@@ -138,7 +138,7 @@ public class IssueConverterTests {
         + "    ]\n"
         + "  }\n"
         + "}";
-    IssueEntity issue1 = converter.createIssueEntityFromJson(json1);
+    IssueEntityMongo issue1 = converter.createIssueEntityFromJson(json1);
     issueEntities.add(issue1);
     
     String json2 = ""
@@ -174,7 +174,7 @@ public class IssueConverterTests {
         + "    ]\n"
         + "  }\n"
         + "}";
-    IssueEntity issue2 = converter.createIssueEntityFromJson(json2);
+    IssueEntityMongo issue2 = converter.createIssueEntityFromJson(json2);
     issueEntities.add(issue2);
     
     String actual = converter.createJsonFromIssueEntity(issueEntities);

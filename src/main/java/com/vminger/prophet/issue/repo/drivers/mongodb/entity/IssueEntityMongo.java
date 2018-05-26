@@ -2,7 +2,7 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue.entity;
+package com.vminger.prophet.issue.repo.drivers.mongodb.entity;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "issue_entity")
-public class IssueEntity implements Serializable, Comparable<IssueEntity> {
+public class IssueEntityMongo implements Serializable, Comparable<IssueEntityMongo> {
 
   private static final long serialVersionUID = -748388722236389944L;
   
@@ -46,7 +46,7 @@ public class IssueEntity implements Serializable, Comparable<IssueEntity> {
   @Field("tags")
   private List<String> tags;
 
-  public IssueEntity() {
+  public IssueEntityMongo() {
     tags = new LinkedList<String>();
   }
 
@@ -65,7 +65,7 @@ public class IssueEntity implements Serializable, Comparable<IssueEntity> {
    * @param fromUrl 爬虫爬取的原始url，user_id和url二选一
    * @param dod 0-100，n表示有n%的人不会做，数值越大，难度越大
    */
-  public IssueEntity(String contextId, String context, String k12n,
+  public IssueEntityMongo(String contextId, String context, String k12n,
       String subject, float dod, String type, Map<String, String> qasQuestion,
       Map<String, Map<String, String>> qasOptions, String createdAt,
       String updatedAt, String userId, String fromUrl) {
@@ -233,7 +233,7 @@ public class IssueEntity implements Serializable, Comparable<IssueEntity> {
   }
 
   @Override
-  public int compareTo(IssueEntity issueEntity) {
+  public int compareTo(IssueEntityMongo issueEntity) {
     return contextId.compareTo(issueEntity.getContextId());
   }
 }

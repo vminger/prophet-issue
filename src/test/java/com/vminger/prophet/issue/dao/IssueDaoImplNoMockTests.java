@@ -19,14 +19,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.converter.IssueConverter;
-import com.vminger.prophet.issue.entity.IssueEntity;
+import com.vminger.prophet.issue.repo.drivers.mongodb.dao.IssueDaoImplMongo;
+import com.vminger.prophet.issue.repo.drivers.mongodb.entity.IssueEntityMongo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
 public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
 
   @Autowired
-  IssueDaoImpl issueDao;
+  IssueDaoImplMongo issueDao;
   
   @Autowired
   IssueConverter issueFactory;
@@ -37,7 +38,7 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
   
   @Test
   public void testInsertEmptyIssue() throws Exception {
-    IssueEntity issueEntity = new IssueEntity();
+    IssueEntityMongo issueEntity = new IssueEntityMongo();
     issueDao.insert(issueEntity);
   }
   
@@ -77,7 +78,7 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
         + "  }\n"
         + "}";
     
-    IssueEntity issueEntity = issueFactory.createIssueEntityFromJson(issueInstance);
+    IssueEntityMongo issueEntity = issueFactory.createIssueEntityFromJson(issueInstance);
     
     issueDao.insert(issueEntity);
   }
@@ -85,7 +86,7 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
   @Test
   public void testListAllIssues() throws Exception {
     
-    List<IssueEntity> actual = issueDao.listAllIssues();
+    List<IssueEntityMongo> actual = issueDao.listAllIssues();
     
   }
   

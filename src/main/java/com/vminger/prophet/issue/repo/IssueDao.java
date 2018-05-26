@@ -2,13 +2,13 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue.dao;
+package com.vminger.prophet.issue.repo;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.vminger.prophet.issue.entity.IssueEntity;
+import com.vminger.prophet.issue.repo.drivers.mongodb.entity.IssueEntityMongo;
 
 @Component
 public interface IssueDao {
@@ -17,39 +17,39 @@ public interface IssueDao {
    *  Insert an issue.
    * @param issue issue entity
    */
-  public void insert(IssueEntity issue);
+  public void insert(IssueEntityMongo issue);
 
   /**
    * Insert all issues.
    * @param issues issue entities
    */
-  public void insertAll(List<IssueEntity> issues);
+  public void insertAll(List<IssueEntityMongo> issues);
 
   /**
    * Search an issue by ID.
    * @param id context issue id
    * @return
    */
-  IssueEntity findById(String id);
+  IssueEntityMongo findById(String id);
 
   /**
    * Search issues by userID.
    * @param userId user id
    * @return
    */
-  List<IssueEntity> findByUserId(String userId);
+  List<IssueEntityMongo> findByUserId(String userId);
   
   /**
    * List all issues.
    * @return issue entities
    */
-  List<IssueEntity> listAllIssues();
+  List<IssueEntityMongo> listAllIssues();
   
   /**
    * Delete an issue.
    * @param issue issue entity
    */
-  public void delete(IssueEntity issue);
+  public void delete(IssueEntityMongo issue);
 
   /**
    * Delete an issue by ID.
