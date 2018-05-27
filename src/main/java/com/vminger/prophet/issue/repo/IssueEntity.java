@@ -2,51 +2,32 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue.repo.drivers.mongodb.entity;
+package com.vminger.prophet.issue.repo;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-@Document(collection = "issue_entity")
-public class IssueEntityMongo implements Serializable, Comparable<IssueEntityMongo> {
+public class IssueEntity implements Serializable, Comparable<IssueEntity> {
 
   private static final long serialVersionUID = -748388722236389944L;
   
-  @Id
   private String contextId;
-  @Field("context")
   private String context;
-  @Field("k12n")
   private String k12n;
-  @Field("subject")
   private String subject;
-  @Field("dod")
   private float dod;
-  @Field("type")
   private String type;
-  @Field("qas_question")
   private Map<String, String> qasQuestion;
-  @Field("qas_options")
   private Map<String, Map<String, String>> qasOptions;
-  @Field("create_at")
   private String createdAt;
-  @Field("update_at")
   private String updatedAt;
-  @Field("user_id")
   private String userId;
-  @Field("from_url")
   private String fromUrl;
-  @Field("tags")
   private List<String> tags;
 
-  public IssueEntityMongo() {
+  public IssueEntity() {
     tags = new LinkedList<String>();
   }
 
@@ -65,7 +46,7 @@ public class IssueEntityMongo implements Serializable, Comparable<IssueEntityMon
    * @param fromUrl 爬虫爬取的原始url，user_id和url二选一
    * @param dod 0-100，n表示有n%的人不会做，数值越大，难度越大
    */
-  public IssueEntityMongo(String contextId, String context, String k12n,
+  public IssueEntity(String contextId, String context, String k12n,
       String subject, float dod, String type, Map<String, String> qasQuestion,
       Map<String, Map<String, String>> qasOptions, String createdAt,
       String updatedAt, String userId, String fromUrl) {
@@ -233,7 +214,7 @@ public class IssueEntityMongo implements Serializable, Comparable<IssueEntityMon
   }
 
   @Override
-  public int compareTo(IssueEntityMongo issueEntity) {
+  public int compareTo(IssueEntity issueEntity) {
     return contextId.compareTo(issueEntity.getContextId());
   }
 }

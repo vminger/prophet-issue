@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.repo.IssueDao;
-import com.vminger.prophet.issue.repo.drivers.mongodb.entity.IssueEntityMongo;
+import com.vminger.prophet.issue.repo.IssueEntity;
 
 @Service("issueServiceImpl")
 public class IssueServiceImpl implements IssueService {
@@ -28,7 +28,7 @@ public class IssueServiceImpl implements IssueService {
    * @param issues issue json instance.
    */
   public String addIssues(String issues) {
-    IssueEntityMongo issueEntity;
+    IssueEntity issueEntity;
     issueEntity = issueFactory.createIssueEntityFromJson(issues);
     issueDao.insert(issueEntity);
     
@@ -39,7 +39,7 @@ public class IssueServiceImpl implements IssueService {
    * List all issues.
    */
   public String listAllIssues() {
-    List<IssueEntityMongo> issueEntities = issueDao.listAllIssues();
+    List<IssueEntity> issueEntities = issueDao.listAllIssues();
     String result = issueFactory.createJsonFromIssueEntity(issueEntities);
     return result;
   }

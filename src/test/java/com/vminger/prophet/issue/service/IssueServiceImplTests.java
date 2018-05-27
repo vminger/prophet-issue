@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.repo.IssueDao;
-import com.vminger.prophet.issue.repo.drivers.mongodb.entity.IssueEntityMongo;
+import com.vminger.prophet.issue.repo.IssueEntity;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
@@ -85,7 +85,7 @@ public class IssueServiceImplTests {
         + "  }\n"
         + "}";
     
-    IssueEntityMongo issueEntity = new IssueEntityMongo();
+    IssueEntity issueEntity = new IssueEntity();
     when(issueFactory.createIssueEntityFromJson(issues)).thenReturn(issueEntity);
     
     String actual = issueServiceImpl.addIssues(issues);
@@ -97,8 +97,8 @@ public class IssueServiceImplTests {
   
   @Test
   public void testListAllIssues() throws Exception {
-    List<IssueEntityMongo> issueEntities = new LinkedList<IssueEntityMongo>();
-    IssueEntityMongo issueEntity = new IssueEntityMongo();
+    List<IssueEntity> issueEntities = new LinkedList<IssueEntity>();
+    IssueEntity issueEntity = new IssueEntity();
     issueEntity.setContextId("f597e7aa-bae8-407b-a77c-9dd0a09d7a72");
     issueEntity.setContext("test context");
     issueEntities.add(issueEntity);

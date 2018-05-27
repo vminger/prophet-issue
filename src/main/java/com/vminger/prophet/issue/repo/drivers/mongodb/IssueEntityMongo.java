@@ -2,51 +2,51 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue.repo.drivers.elasticsearch.entity;
+package com.vminger.prophet.issue.repo.drivers.mongodb;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(indexName = "prophet_issue",type = "issue_entity",
-    shards = 1, replicas = 0, refreshInterval = "-1")
-public class IssueEntityElastic implements Serializable, Comparable<IssueEntityElastic> {
+@Document(collection = "issue_entity")
+public class IssueEntityMongo implements Serializable, Comparable<IssueEntityMongo> {
 
-  private static final long serialVersionUID = 116452320289004694L;
-
+  private static final long serialVersionUID = -748388722236389944L;
+  
   @Id
   private String contextId;
-  @Field
+  @Field("context")
   private String context;
-  @Field
+  @Field("k12n")
   private String k12n;
-  @Field
+  @Field("subject")
   private String subject;
-  @Field
+  @Field("dod")
   private float dod;
-  @Field
+  @Field("type")
   private String type;
-  @Field
+  @Field("qas_question")
   private Map<String, String> qasQuestion;
-  @Field
+  @Field("qas_options")
   private Map<String, Map<String, String>> qasOptions;
-  @Field
+  @Field("create_at")
   private String createdAt;
-  @Field
+  @Field("update_at")
   private String updatedAt;
-  @Field
+  @Field("user_id")
   private String userId;
-  @Field
+  @Field("from_url")
   private String fromUrl;
-  @Field
+  @Field("tags")
   private List<String> tags;
 
-  public IssueEntityElastic() {
+  public IssueEntityMongo() {
     tags = new LinkedList<String>();
   }
 
@@ -65,7 +65,7 @@ public class IssueEntityElastic implements Serializable, Comparable<IssueEntityE
    * @param fromUrl 爬虫爬取的原始url，user_id和url二选一
    * @param dod 0-100，n表示有n%的人不会做，数值越大，难度越大
    */
-  public IssueEntityElastic(String contextId, String context, String k12n,
+  public IssueEntityMongo(String contextId, String context, String k12n,
       String subject, float dod, String type, Map<String, String> qasQuestion,
       Map<String, Map<String, String>> qasOptions, String createdAt,
       String updatedAt, String userId, String fromUrl) {
@@ -233,8 +233,7 @@ public class IssueEntityElastic implements Serializable, Comparable<IssueEntityE
   }
 
   @Override
-  public int compareTo(IssueEntityElastic issueEntity) {
+  public int compareTo(IssueEntityMongo issueEntity) {
     return contextId.compareTo(issueEntity.getContextId());
   }
-
 }

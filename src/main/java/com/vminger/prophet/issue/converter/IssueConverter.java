@@ -14,7 +14,9 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import com.vminger.prophet.issue.recomend.TagFactory;
-import com.vminger.prophet.issue.repo.drivers.mongodb.entity.IssueEntityMongo;
+import com.vminger.prophet.issue.repo.IssueEntity;
+import com.vminger.prophet.issue.repo.drivers.elasticsearch.IssueEntityElastic;
+import com.vminger.prophet.issue.repo.drivers.mongodb.IssueEntityMongo;
 import com.vminger.prophet.issue.util.UniDatetime;
 
 /**
@@ -31,9 +33,9 @@ public class IssueConverter {
    * @param jsonInstance json instance
    * @return issue entity
    */
-  public IssueEntityMongo createIssueEntityFromJson(final String jsonInstance) {
+  public IssueEntity createIssueEntityFromJson(final String jsonInstance) {
 
-    IssueEntityMongo issueEntity = new IssueEntityMongo();
+    IssueEntity issueEntity = new IssueEntity();
 
     JSONObject jsonObject = new JSONObject(jsonInstance);
 
@@ -104,11 +106,11 @@ public class IssueConverter {
    * @param issueEntities issue entities
    * @return json instance
    */
-  public String createJsonFromIssueEntity(final List<IssueEntityMongo> issueEntities) {
+  public String createJsonFromIssueEntity(final List<IssueEntity> issueEntities) {
     String jsons = "[";
 
     for (int i = 0; i < issueEntities.size(); i++) {
-      IssueEntityMongo issueEntity = issueEntities.get(i);
+      IssueEntity issueEntity = issueEntities.get(i);
       String json = issueEntity.toString();
       jsons += json;
       jsons += ",";
@@ -118,4 +120,46 @@ public class IssueConverter {
 
     return jsons;
   }
+  
+  /**
+   * Convert IssueEntityMongo to IssueEntity.
+   * @param mongo IssueEntityMongo
+   * @return IssueEntity
+   */
+  public IssueEntity createIssueEntityFromMongo(IssueEntityMongo mongo) {
+    IssueEntity entity = new IssueEntity();
+    return entity;
+  }
+  
+  /**
+   * Convert IssueEntity to IssueEntityMongo.
+   * @param entity IssueEntity
+   * @return IssueEntityMongo
+   */
+  public IssueEntityMongo createMongoFromIssueEntity(IssueEntity entity) {
+    IssueEntityMongo mongo = new IssueEntityMongo();
+    return mongo;
+  }
+  
+  
+  /**
+   * Convert IssueEntityElastic to IssueEntity.
+   * @param elastic IssueEntityElastic
+   * @return IssueEntity
+   */
+  public IssueEntity createIssueEntityFromElastic(IssueEntityElastic elastic) {
+    IssueEntity entity = new IssueEntity();
+    return entity;
+  }
+  
+  /**
+   * Convert IssueEntity to IssueEntityElastic.
+   * @param entity IssueEntity
+   * @return IssueEntityElastic
+   */
+  public IssueEntityElastic createElasticFromIssueEntity(IssueEntity entity) {
+    IssueEntityElastic elastic = new IssueEntityElastic();
+    return elastic;
+  }
+  
 }
