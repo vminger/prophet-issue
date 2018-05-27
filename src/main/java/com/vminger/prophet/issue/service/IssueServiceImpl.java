@@ -17,31 +17,46 @@ import com.vminger.prophet.issue.repo.IssueEntity;
 public class IssueServiceImpl implements IssueService {
   
   @Autowired
-  private IssueDao issueDao;
+  private IssueDao dao;
 
   @Autowired
-  IssueConverter issueFactory;
+  IssueConverter converter;
   
   /**
-   * Add issue.
+   * Add an issue.
    * @author VMINGER
    * @param issues issue json instance.
    */
-  public String addIssues(String issues) {
+  @Override
+  public String createIssue(String issueInstance) {
     IssueEntity issueEntity;
-    issueEntity = issueFactory.createIssueEntityFromJson(issues);
-    issueDao.insert(issueEntity);
-    
-    return issues;
+    issueEntity = converter.createIssueEntityFromJson(issueInstance);
+    dao.insert(issueEntity);
+    return issueInstance;
   }
-  
-  /**
-   * List all issues.
-   */
-  public String listAllIssues() {
-    List<IssueEntity> issueEntities = issueDao.listAllIssues();
-    String result = issueFactory.createJsonFromIssueEntity(issueEntities);
+
+  @Override
+  public String showIssue(String id) {
+    IssueEntity issue = dao.findById(id);
+    String json = converter.createJsonFromIssueEntity(issue);
+    return json;
+  }
+
+  @Override
+  public String updateIssue(String id, String issueInstance) {
+    List<IssueEntity> issueEntities = dao.listAllIssues();
+    String result = converter.createJsonFromIssueEntity(issueEntities);
     return result;
+  }
+
+  @Override
+  public String deleteIssue(String id) {
+    dao.deleteById(id);
+  }
+
+  @Override
+  public String listIssues() {
+    dao.listAllIssues();
   }
 
 }

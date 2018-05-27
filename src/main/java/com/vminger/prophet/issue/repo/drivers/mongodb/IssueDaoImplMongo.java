@@ -19,7 +19,7 @@ import com.vminger.prophet.issue.repo.IssueEntity;
 public class IssueDaoImplMongo implements IssueDao {
   
   @Autowired
-  private MongoTemplate template;
+  private MongoTemplate repo;
   
   @Autowired
   private IssueConverter converter;
@@ -28,7 +28,7 @@ public class IssueDaoImplMongo implements IssueDao {
   public void insert(IssueEntity issue) {
     // TODO Auto-generated method stub
     IssueEntityMongo mongo = converter.createMongoFromIssueEntity(issue);
-    template.insert(mongo);
+    repo.insert(mongo);
   }
 
   @Override
@@ -39,13 +39,15 @@ public class IssueDaoImplMongo implements IssueDao {
       IssueEntityMongo mongo = converter.createMongoFromIssueEntity(issue);
       mongos.add(mongo);
     }
-    template.insertAll(mongos);
+    repo.insertAll(mongos);
   }
 
   @Override
   public IssueEntity findById(String id) {
     // TODO Auto-generated method stub
-    return template.findById(id, IssueEntity.class);
+    IssueEntityMongo mongo = repo.findById(id, IssueEntityMongo.class);
+    IssueEntity issue = converter.createIssueEntityFromMongo(mongo);
+    return issue;
   }
 
   @Override
@@ -56,13 +58,19 @@ public class IssueDaoImplMongo implements IssueDao {
 
   @Override
   public List<IssueEntity> listAllIssues() {
-    return template.findAll(IssueEntity.class);
+    List<IssueEntityMongo> mongos = repo.findAll(IssueEntityMongo.class);
+    List<IssueEntity> issues = new ArrayList<IssueEntity>();
+    for (IssueEntityMongo mongo : mongos) {
+      IssueEntity issue = converter.createIssueEntityFromMongo(mongo);
+      issues.add(issue);
+    }
+    return issues;
   }
   
   @Override
   public void delete(IssueEntity issue) {
-    // TODO Auto-generated method stub
-    template.remove(issue);
+    IssueEntityMongo mongo = converter.createMongoFromIssueEntity(issue);
+    repo.remove(mongo);
   }
 
   @Override

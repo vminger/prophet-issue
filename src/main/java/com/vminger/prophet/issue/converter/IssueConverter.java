@@ -106,6 +106,15 @@ public class IssueConverter {
    * @param issueEntities issue entities
    * @return json instance
    */
+  public String createJsonFromIssueEntity(final IssueEntity issueEntity) {
+    return issueEntity.toString();
+  }
+
+  /**
+   * Covert issue entity to json instance.
+   * @param issueEntities issue entities
+   * @return json instance
+   */
   public String createJsonFromIssueEntity(final List<IssueEntity> issueEntities) {
     String jsons = "[";
 
@@ -136,7 +145,7 @@ public class IssueConverter {
    * @param entity IssueEntity
    * @return IssueEntityMongo
    */
-  public IssueEntityMongo createMongoFromIssueEntity(IssueEntity entity) {
+  public IssueEntityMongo createMongoFromIssueEntity(IssueEntity issue) {
     IssueEntityMongo mongo = new IssueEntityMongo();
     return mongo;
   }
@@ -157,7 +166,7 @@ public class IssueConverter {
    * @param entity IssueEntity
    * @return IssueEntityElastic
    */
-  public IssueEntityElastic createElasticFromIssueEntity(IssueEntity entity) {
+  public IssueEntityElastic createElasticFromIssueEntity(IssueEntity issue) {
     IssueEntityElastic elastic = new IssueEntityElastic();
     return elastic;
   }
