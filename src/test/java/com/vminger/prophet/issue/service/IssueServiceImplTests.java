@@ -51,7 +51,7 @@ public class IssueServiceImplTests {
   
   @Test
   public void testAddIssue() throws Exception {
-    String issues = ""
+    String issueInstance = ""
         + "{\n"
         + "  \"issues_in_text\": {\n"
         + "    \"context\": \"vimger test context\",\n"
@@ -86,13 +86,14 @@ public class IssueServiceImplTests {
         + "}";
     
     IssueEntity issueEntity = new IssueEntity();
-    when(issueFactory.createIssueEntityFromJson(issues)).thenReturn(issueEntity);
+    when(issueFactory.createIssueEntityFromJson(issueInstance))
+        .thenReturn(issueEntity);
     
-    String actual = issueServiceImpl.addIssues(issues);
+    String actual = issueServiceImpl.createIssue(issueInstance);
     
-    verify(issueFactory, times(1)).createIssueEntityFromJson(issues);
+    verify(issueFactory, times(1)).createIssueEntityFromJson(issueInstance);
     
-    assertEquals(issues, actual);
+    assertEquals(issueInstance, actual);
   }
   
   @Test
@@ -109,9 +110,9 @@ public class IssueServiceImplTests {
         + "\"context\":" + issueEntity.getContext()
         + "}";
     
-    when(issueDao.listAllIssues()).thenReturn(issueEntities);
+    when(issueDao.listIssues()).thenReturn(issueEntities);
     when(issueFactory.createJsonFromIssueEntity(issueEntities)).thenReturn(expected);
-    String actual = issueServiceImpl.listAllIssues();
+    String actual = issueServiceImpl.listIssues();
     
     assertEquals(expected, actual);
   }

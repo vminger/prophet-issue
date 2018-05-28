@@ -12,47 +12,65 @@ import org.springframework.stereotype.Component;
 public interface IssueDao {
 
   /**
-   *  Insert an issue.
-   * @param issue issue entity
+   * Create an issue.
+   * @author VMINGER
+   * @param issueEntity issue entity
+   * @exception Exception create exception
    */
-  public void insert(IssueEntity issue);
+  public void create(IssueEntity issueEntity) throws Exception;
 
   /**
-   * Insert all issues.
-   * @param issues issue entities
+   * Create issues.
+   * @author VMINGER
+   * @param issueEntities issue entities
+   * @exception Exception create exception
    */
-  public void insertAll(List<IssueEntity> issues);
+  public void create(List<IssueEntity> issueEntities) throws Exception;
 
   /**
-   * Search an issue by ID.
-   * @param id context issue id
-   * @return
+   * Find an issue by issue id.
+   * @author VMINGER
+   * @param id issue id
+   * @return issue entity
    */
-  public IssueEntity findById(String id);
+  public IssueEntity findByIssueId(String id) throws Exception;
 
   /**
-   * Search issues by userID.
+   * Find issues by user id.
+   * @author VMINGER
    * @param userId user id
-   * @return
+   * @return issue entities
    */
-  public List<IssueEntity> findByUserId(String userId);
+  public List<IssueEntity> findByUserId(String userId) throws Exception;
   
   /**
    * List all issues.
+   * @author VMINGER
    * @return issue entities
    */
-  public List<IssueEntity> listAllIssues();
+  public List<IssueEntity> listIssues() throws Exception;
+  
+  /**
+   * Update an issue.
+   * @author VMINGER
+   * @param issueEntity issue entity
+   * @return result
+   * 
+   */
+  public String update(IssueEntity issueEntity) throws Exception;
   
   /**
    * Delete an issue.
+   * @author VMINGER
    * @param issue issue entity
    */
-  public void delete(IssueEntity issue);
+  public String delete(IssueEntity issue) throws Exception;
 
   /**
-   * Delete an issue by ID.
-   * @param id context issue id
+   * Delete an issue.
+   * @author VMINGER
+   * @param id issue id
    */
-  public void deleteById(String id);
+  public String deleteByIssueId(String id) throws Exception;
 
 }

@@ -39,7 +39,7 @@ public class IssueController {
   private IssueViewer viewer;
 
   /**
-   * Controller for add issues.
+   * Add an issue.
    * @param issueInstance issue json instance
    * @return no return value
    * @throws IssueBadJsonException 4xx bad code
@@ -109,8 +109,11 @@ public class IssueController {
       produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String updateIssue(@PathVariable String id, @RequestBody String issueInstance) {
-    String result = service.updateIssue(id, issueInstance);
+    
+    String result = service.updateIssue(issueInstance);
+    
     String view = viewer.updateIssueView(result);
+    
     return view;
   }
   
@@ -124,8 +127,11 @@ public class IssueController {
       produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String deleteIssue(@PathVariable String id) {
+    
     String result = service.deleteIssue(id);
+    
     String view = viewer.deleteIssueView(result);
+    
     return view;
   }
   
@@ -145,4 +151,22 @@ public class IssueController {
     return view;
   }
 
+  /**
+   * List issues by user id.
+   * @param id user id
+   * @return view for list issues by user id
+   */
+  @RequestMapping(
+      value = "/user/{id}",
+      method = RequestMethod.GET)
+  @ResponseBody
+  public String listIssuesByUserId(@PathVariable String id) {
+    
+    String result = service.listIssuesByUserId(id);
+    
+    String view = viewer.listIssuesByUserIdView(result);
+    
+    return view;
+    
+  }
 }

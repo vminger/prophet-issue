@@ -45,7 +45,7 @@ public class IssueDaoImplTests {
   @Test
   public void testInsert() throws Exception {
     IssueEntity issueEntity = new IssueEntity();
-    issueDaoImpl.insert(issueEntity);
+    issueDaoImpl.create(issueEntity);
     verify(template, times(1)).insert(issueEntity);
   }
   
@@ -54,7 +54,7 @@ public class IssueDaoImplTests {
     List<IssueEntity> issueEntities = new LinkedList<IssueEntity>();
     IssueEntity issueEntity = new IssueEntity();
     issueEntities.add(issueEntity);
-    issueDaoImpl.insertAll(issueEntities);
+    issueDaoImpl.create(issueEntities);
     verify(template, times(1)).insertAll(issueEntities);
   }
   
@@ -68,7 +68,7 @@ public class IssueDaoImplTests {
   @Test
   public void testDeleteById() throws Exception {
     String contextId = "b15de281-5868-4992-b918-63d582e69ecb";
-    issueDaoImpl.deleteById(contextId);
+    issueDaoImpl.deleteByIssueId(contextId);
   }
   
   @Test
@@ -77,7 +77,7 @@ public class IssueDaoImplTests {
     IssueEntity issueEntity = new IssueEntity();
     when(template.findById(contextId, IssueEntity.class)).thenReturn(issueEntity);
     
-    IssueEntity retEntity = issueDaoImpl.findById(contextId);
+    IssueEntity retEntity = issueDaoImpl.findByIssueId(contextId);
     assertEquals(retEntity, issueEntity);
   }
   
@@ -100,7 +100,7 @@ public class IssueDaoImplTests {
     
     when(template.findAll(IssueEntity.class)).thenReturn(expected);
     
-    List<IssueEntity> actual = issueDaoImpl.listAllIssues();
+    List<IssueEntity> actual = issueDaoImpl.listIssues();
     
     assertEquals(expected, actual);
   }

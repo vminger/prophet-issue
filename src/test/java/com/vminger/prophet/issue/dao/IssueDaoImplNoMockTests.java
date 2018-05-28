@@ -4,6 +4,8 @@
 
 package com.vminger.prophet.issue.dao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.junit.After;
@@ -39,7 +41,7 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
   @Test
   public void testInsertEmptyIssue() throws Exception {
     IssueEntity issueEntity = new IssueEntity();
-    issueDao.insert(issueEntity);
+    issueDao.create(issueEntity);
   }
   
   @Test
@@ -80,14 +82,15 @@ public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
     
     IssueEntity issueEntity = issueFactory.createIssueEntityFromJson(issueInstance);
     
-    issueDao.insert(issueEntity);
+    issueDao.create(issueEntity);
   }
   
   @Test
-  public void testListAllIssues() throws Exception {
+  public void testListIssues() throws Exception {
     
-    List<IssueEntity> actual = issueDao.listAllIssues();
+    List<IssueEntity> actual = issueDao.listIssues();
     
+    assertEquals(actual.size(), 0);
   }
   
   @After

@@ -78,5 +78,19 @@ public class IssueViewer {
         + "}";
     return view;
   }
+  
+  /**
+   * View for list issues by user id.
+   * @param result result for list issues by user id
+   * @return
+   */
+  public String listIssuesByUserIdView(String result) {
+    String view = ""
+        + "{"
+        + "  \"issue_list_text\": {"
+        + result
+        + "}";
+    return view;
+  }
     
 }

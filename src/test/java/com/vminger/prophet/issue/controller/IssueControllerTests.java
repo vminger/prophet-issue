@@ -61,7 +61,7 @@ public class IssueControllerTests extends BaseIssueTests {
    */
   @Test
   public void testAddIssue() throws Exception {
-    String issues = ""
+    String issueInstance = ""
         + "{\n"
         + "  \"issues_in_text\": {\n"
         + "    \"context\": \"vimger test context\",\n"
@@ -95,18 +95,18 @@ public class IssueControllerTests extends BaseIssueTests {
         + "  }\n"
         + "}";
 
-    when(service.addIssues(issues)).thenReturn(issues);
+    when(service.createIssue(issueInstance)).thenReturn(issueInstance);
 
     mockMvc.perform(post("/v1.0/issues")
         .accept(MediaType.APPLICATION_JSON_UTF8)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
-        .content(issues))
+        .content(issueInstance))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
       .andDo(print())
       .andReturn();
 
-    verify(service, times(1)).addIssues(issues);
+    verify(service, times(1)).createIssue(issueInstance);
   }
 
   /**
@@ -115,19 +115,19 @@ public class IssueControllerTests extends BaseIssueTests {
    */
   @Test
   public void testAddIssueWithBadJsonInstance1() throws Exception {
-    String issues = "{\"test\":\"test1\"}";
+    String issueInstance = "{\"test\":\"test1\"}";
 
-    when(service.addIssues(issues)).thenReturn(issues);
+    when(service.createIssue(issueInstance)).thenReturn(issueInstance);
 
     mockMvc.perform(post("/v1.0/issues")
           .accept(MediaType.APPLICATION_JSON_UTF8)
           .contentType(MediaType.APPLICATION_JSON_UTF8)
-          .content(issues))
+          .content(issueInstance))
       .andExpect(status().is4xxClientError())
       .andDo(print())
       .andReturn();
 
-    verify(service, times(0)).addIssues(issues);
+    verify(service, times(0)).createIssue(issueInstance);
   }
 
   /**
@@ -136,19 +136,19 @@ public class IssueControllerTests extends BaseIssueTests {
    */
   @Test
   public void testAddIssueWithBadJsonInstance2() throws Exception {
-    String issues = "test";
+    String issueInstance = "test";
 
-    when(service.addIssues(issues)).thenReturn(issues);
+    when(service.createIssue(issueInstance)).thenReturn(issueInstance);
 
     mockMvc.perform(post("/v1.0/issues")
           .accept(MediaType.APPLICATION_JSON_UTF8)
           .contentType(MediaType.APPLICATION_JSON_UTF8)
-          .content(issues))
+          .content(issueInstance))
       .andExpect(status().is5xxServerError())
       .andDo(print())
       .andReturn();
 
-    verify(service, times(0)).addIssues(issues);
+    verify(service, times(0)).createIssue(issueInstance);
   }
 
   /**
@@ -157,7 +157,7 @@ public class IssueControllerTests extends BaseIssueTests {
    */
   @Test
   public void testAddIssueWithBadRequestHeader1() throws Exception {
-    String issues = ""
+    String issueInstance = ""
         + "{\n"
         + "  \"issues_in_text\": {\n"
         + "    \"context\": \"vimger test context\",\n"
@@ -191,17 +191,17 @@ public class IssueControllerTests extends BaseIssueTests {
         + "  }\n"
         + "}";
 
-    when(service.addIssues(issues)).thenReturn(issues);
+    when(service.createIssue(issueInstance)).thenReturn(issueInstance);
 
     mockMvc.perform(post("/v1.0/issues")
           .accept(MediaType.APPLICATION_JSON_UTF8)
           .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-          .content(issues))
+          .content(issueInstance))
       .andExpect(status().is4xxClientError())
       .andDo(print())
       .andReturn();
 
-    verify(service, times(0)).addIssues(issues);
+    verify(service, times(0)).createIssue(issueInstance);
   }
   
   @Test
@@ -213,16 +213,16 @@ public class IssueControllerTests extends BaseIssueTests {
         + result
         + "}";
     
-    when(service.listAllIssues()).thenReturn(result);
-    when(issueViewer.listAllIssuesViewer(result)).thenReturn(expected);
+    when(service.listIssues()).thenReturn(result);
+    when(issueViewer.listIssuesView(result)).thenReturn(expected);
     
     MvcResult mvcResult = mockMvc.perform(get("/v1.0/issues"))
         .andExpect(status().isOk())
         .andDo(print())
         .andReturn();
     
-    verify(service, times(1)).listAllIssues();
-    verify(issueViewer,times(1)).listAllIssuesViewer(result);
+    verify(service, times(1)).listIssues();
+    verify(issueViewer,times(1)).listIssuesView(result);
     
     assertEquals(expected, mvcResult.getResponse().getContentAsString());
   }

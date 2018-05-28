@@ -39,7 +39,7 @@ public class IssueViewerTests {
         + "  \"issues_in_text\": {"
         + result
         + "}";
-    String actual = viewer.createIssuesViewer(result);
+    String actual = viewer.createIssueView(result);
     
     assertEquals(expected, actual);
   }
@@ -52,7 +52,7 @@ public class IssueViewerTests {
         + "  \"issues_in_text\": {"
         + result
         + "}";
-    String actual = viewer.listAllIssuesViewer(result);
+    String actual = viewer.listIssuesView(result);
     
     assertEquals(expected, actual);
   }
