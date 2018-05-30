@@ -10,11 +10,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * IssueProcessingException
+ * IssueProcessingException.
  * @author vminger
  *
  */
-@ResponseStatus(code=HttpStatus.INTERNAL_SERVER_ERROR, reason="Bad json schema")
 public class IssueIOException extends IOException {
-	private static final long serialVersionUID = 5000000000000000003L;
+
+  private static final long serialVersionUID = -5989067792843400914L;
+  
+  public IssueIOException() {
+  }
+  
+  public IssueIOException(String message, Throwable cause) {
+    super(message, cause);      
+  }
+
+  public IssueIOException(String message) {
+    super(message);     
+  }
+
+  public IssueIOException(Throwable cause) {
+    super(cause);
+  }
+
 }

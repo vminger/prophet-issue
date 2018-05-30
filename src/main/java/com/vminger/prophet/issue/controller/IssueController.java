@@ -5,19 +5,26 @@
 package com.vminger.prophet.issue.controller;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
+
 import com.vminger.prophet.issue.constant.IssueConstant;
 import com.vminger.prophet.issue.exception.IssueBadJsonException;
 import com.vminger.prophet.issue.exception.IssueIOException;
@@ -38,49 +45,91 @@ public class IssueController {
   @Autowired
   private IssueViewer viewer;
 
+  @ExceptionHandler({ IssueBadJsonException.class })
+  @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public String handleIssueBadJsonException(Exception ex) {
+    String view = viewer.errorView(ex.getMessage());
+    return view;
+  }
+  
+  @ExceptionHandler({ IssueProcessingException.class })
+  @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public String handleIssueProcessingException(Exception ex) {
+    String view = viewer.errorView(ex.getMessage());
+    return view;
+  }
+  
+  @ExceptionHandler({ IssueIOException.class })
+  @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+  @ResponseBody
+  public String handleIssueIOException(Exception ex) {
+    String view = viewer.errorView("Bad json instance");
+    return view;
+  }
+  
   /**
    * Add an issue.
    * @param issueInstance issue json instance
    * @return no return value
-   * @throws IssueBadJsonException 4xx bad code
-   * @throws IssueProcessingException 4xx bad code
-   * @throws IssueIOException 5xx bad code
+   * @throws IssueBadJsonException 4xx bad code for
+   *         json instance does not match json schema.
+   * @throws IssueProcessingException 4xx bad code for
+   *         json schema or json instance error.
+   * @throws IssueIOException 5xx bad code for json schema file error.
    */
   @RequestMapping(method = RequestMethod.POST,
-      consumes = "application/json;charset=UTF-8",
-      produces = "application/json;charset=UTF-8")
+      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
   public String createIssue(@RequestBody String issueInstance)
       throws IssueBadJsonException, 
-      IssueProcessingException,
-      IssueIOException {
-
+             IssueProcessingException,
+             IssueIOException {
     logger.info("Start to create an issue from json instance");
-    logger.info(issueInstance);
+    logger.debug(issueInstance);
     
     try {
+      
       ProcessingReport report = IssueJsonSchemaValidator.validateByPath(
           IssueConstant.SCHEMA_ISSUE_IN_TEXT_PATH, issueInstance);
+      
       if (!report.isSuccess()) {
-        logger.warn(report);
-        throw new IssueBadJsonException();
+        
+        logger.error(report);
+        
+        String message = "";
+        Iterator<ProcessingMessage> iterator = report.iterator();
+        while (iterator.hasNext()) {
+          message += iterator.next().getMessage() + "\n";
+        }
+        
+        throw new IssueBadJsonException(message);
       }
+      
+      logger.debug("Validate json instance sucessfully");
+      
     } catch (ProcessingException ex) {
-      logger.warn(ex.getStackTrace());
+      
+      logger.error(ex.getStackTrace());
       throw new IssueProcessingException();
+      
     } catch (IOException ex) {
-      logger.warn(ex.getStackTrace());
+      
+      logger.error(ex.getStackTrace());
       throw new IssueIOException();
+      
     }
 
     String result = service.createIssue(issueInstance);
-
-    logger.info("End to create an issue from json instance");
     
     String view = viewer.createIssueView(result);
     
+    logger.info("End to create an issue from json instance");
+    logger.debug(view);
+    
     return view;
-
   }
   
   /**
@@ -93,9 +142,13 @@ public class IssueController {
       produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String showIssue(@PathVariable String id) {
+    
     String result = service.showIssue(id);
+    
     String view = viewer.showIssueView(result);
+    
     return view;
+  
   }
   
   /**
@@ -115,6 +168,7 @@ public class IssueController {
     String view = viewer.updateIssueView(result);
     
     return view;
+  
   }
   
   /**
@@ -133,13 +187,14 @@ public class IssueController {
     String view = viewer.deleteIssueView(result);
     
     return view;
+  
   }
   
   /**
    * List issues.
    * @return view for list issues
    */
-  @RequestMapping(method = RequestMethod.POST,
+  @RequestMapping(method = RequestMethod.GET,
       produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String listIssues() {
@@ -149,6 +204,7 @@ public class IssueController {
     String view = viewer.listIssuesView(result);
     
     return view;
+  
   }
 
   /**
@@ -167,6 +223,7 @@ public class IssueController {
     String view = viewer.listIssuesByUserIdView(result);
     
     return view;
-    
+  
   }
+  
 }

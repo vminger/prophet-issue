@@ -4,15 +4,28 @@
 
 package com.vminger.prophet.issue.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 /**
- * IssueProcessingException
+ * IssueBadJsonException.
  * @author vminger
  *
  */
-@ResponseStatus(code=HttpStatus.BAD_REQUEST, reason="Bad json instance")
 public class IssueBadJsonException extends Exception {
-	private static final long serialVersionUID = 5000000000000000002L;
+  
+  private static final long serialVersionUID = 8054782616122083853L;
+  
+  public IssueBadJsonException() {
+  }
+  
+  public IssueBadJsonException(String message, Throwable cause) {
+    super(message, cause);      
+  }
+
+  public IssueBadJsonException(String message) {
+    super(message);     
+  }
+
+  public IssueBadJsonException(Throwable cause) {
+    super(cause);
+  }
+
 }

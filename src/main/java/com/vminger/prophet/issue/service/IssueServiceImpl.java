@@ -6,6 +6,8 @@ package com.vminger.prophet.issue.service;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.ldap.DataLdapTest;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import com.vminger.prophet.issue.repo.IssueEntity;
 
 @Service("issueServiceImpl")
 public class IssueServiceImpl implements IssueService {
+  
+  private static final Logger logger = LogManager.getLogger(IssueServiceImpl.class);
   
   @Autowired
   private IssueDao dao;
@@ -31,19 +35,35 @@ public class IssueServiceImpl implements IssueService {
    */
   @Override
   public String createIssue(String issueInstance) {
-    String result = "Create an issue successfully";
+    
+    String result;
+    
+    logger.debug("Start to create issue");
     
     IssueEntity issueEntity =
         converter.createIssueEntityFromJson(issueInstance);
     
     try {
-      dao.create(issueEntity);     
+      
+      dao.create(issueEntity);
+      IssueEntity repoIssue = dao.findByIssueId(issueEntity.getContextId());
+      result = converter.createJsonFromIssueEntity(repoIssue);
+      
+      logger.info("Create an issue successfully");
+      
     } catch (Exception ex) {
+      
       result = "Create an issue failed.\n";
-      result += ex.getStackTrace().toString();
+      result += ex.getMessage();
+      
+      logger.error(result);
+      
     }
     
+    logger.debug("End to create issue");
+    
     return result;
+  
   }
 
   /**
