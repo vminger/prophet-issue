@@ -179,7 +179,15 @@ public class IssueEntityElastic implements Serializable, Comparable<IssueEntityE
   public void setFromUrl(String fromUrl) {
     this.fromUrl = fromUrl;
   }
- 
+  
+  public List<String> getTags() {
+    return tags;
+  }
+  
+  public void setTags(List<String> tags) {
+    this.tags = tags;
+  }
+   
   public void addTag(String tag) {
     tags.add(tag);
   }

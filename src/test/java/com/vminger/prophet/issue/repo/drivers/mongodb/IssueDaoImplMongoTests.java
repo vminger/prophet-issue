@@ -21,8 +21,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.mongodb.client.result.DeleteResult;
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.repo.IssueEntity;
@@ -72,26 +75,24 @@ public class IssueDaoImplMongoTests {
   }
   
   @Test
-  public void testDelete() throws Exception {
-    IssueEntity issueEntity = new IssueEntity();
-    repo.delete(issueEntity);
-    verify(template, times(1)).remove(issueEntity);
-  }
-  
-  @Test
-  public void testDeleteById() throws Exception {
+  public void testFindByIssueId() throws Exception {
+    
     String contextId = "b15de281-5868-4992-b918-63d582e69ecb";
-    repo.deleteByIssueId(contextId);
-  }
-  
-  @Test
-  public void testFindById() throws Exception {
-    String contextId = "b15de281-5868-4992-b918-63d582e69ecb";
+    IssueEntityMongo issueEntityMongo = new IssueEntityMongo();
     IssueEntity issueEntity = new IssueEntity();
-    when(template.findById(contextId, IssueEntity.class)).thenReturn(issueEntity);
+    
+    when(template.findById(contextId, IssueEntityMongo.class))
+      .thenReturn(issueEntityMongo);
+    when(converter.createIssueEntityFromMongo(issueEntityMongo))
+      .thenReturn(issueEntity);
     
     IssueEntity retEntity = repo.findByIssueId(contextId);
-    assertEquals(retEntity, issueEntity);
+    
+    verify(template, times(1)).findById(contextId, IssueEntityMongo.class);
+    verify(converter, times(1)).createIssueEntityFromMongo(issueEntityMongo);
+    
+    assertEquals(issueEntity, retEntity);
+    
   }
   
   @Test
@@ -101,6 +102,45 @@ public class IssueDaoImplMongoTests {
     List<IssueEntity> issueEntities = repo.findByUserId(userId);
     
     assertEquals(issueEntities, null);
+  }
+  
+  @Test
+  public void testDelete() throws Exception {
+    IssueEntity issueEntity = new IssueEntity();
+    repo.delete(issueEntity);
+    verify(template, times(1)).remove(issueEntity);
+  }
+  
+  @Test
+  public void testDeleteByIssueId() throws Exception {
+    
+    String contextId = "84993e0c-5c95-4de3-a197-75c342a1cf44";
+    DeleteResult result = new DeleteResult() {
+      
+      @Override
+      public boolean wasAcknowledged() {
+        // TODO Auto-generated method stub
+        return false;
+      }
+      
+      @Override
+      public long getDeletedCount() {
+        // TODO Auto-generated method stub
+        return 0;
+      }
+    };
+    
+    Query query = new Query();
+    query.addCriteria(Criteria.where("context_id").is(contextId));
+    
+    when(template.remove(query, IssueEntityMongo.class)).thenReturn(result);
+    
+    String actual = repo.deleteByIssueId(contextId);
+    
+    verify(template, times(1)).remove(query, IssueEntityMongo.class);
+    
+    assertEquals(result.toString(), actual);
+    
   }
   
   @Test

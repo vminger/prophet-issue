@@ -39,7 +39,7 @@ public class IssueConverter {
 
     JSONObject jsonObject = new JSONObject(jsonInstance);
 
-    JSONObject jsonIssueInText = jsonObject.getJSONObject("issues_in_text");
+    JSONObject jsonIssueInText = jsonObject.getJSONObject("issue_in_text");
 
     String contextId = UUID.randomUUID().toString();
     issueEntity.setContextId(contextId);
@@ -103,7 +103,7 @@ public class IssueConverter {
 
   /**
    * Covert issue entity to json instance.
-   * @param issueEntities issue entities
+   * @param issueEntity issue entity
    * @return json instance
    */
   public String createJsonFromIssueEntity(final IssueEntity issueEntity) {
@@ -136,17 +136,45 @@ public class IssueConverter {
    * @return IssueEntity
    */
   public IssueEntity createIssueEntityFromMongo(IssueEntityMongo mongo) {
-    IssueEntity entity = new IssueEntity();
-    return entity;
+    IssueEntity issue = new IssueEntity();
+    issue.setContextId(mongo.getContextId());
+    issue.setContext(mongo.getContext());
+    issue.setK12n(mongo.getK12n());
+    issue.setSubject(mongo.getSubject());
+    issue.setType(mongo.getType());
+    issue.setDod(mongo.getDod());
+    issue.setQasQuestion(mongo.getQasQuestion());
+    issue.setQasOptions(mongo.getQasOptions());
+    issue.setCreatedAt(mongo.getCreatedAt());
+    issue.setUpdatedAt(mongo.getUpdatedAt());
+    issue.setFromUrl(mongo.getFromUrl());
+    issue.setUserId(mongo.getUserId());
+    issue.setTags(mongo.getTags());
+    
+    return issue;
   }
   
   /**
    * Convert IssueEntity to IssueEntityMongo.
-   * @param entity IssueEntity
+   * @param issue IssueEntity
    * @return IssueEntityMongo
    */
   public IssueEntityMongo createMongoFromIssueEntity(IssueEntity issue) {
     IssueEntityMongo mongo = new IssueEntityMongo();
+    mongo.setContextId(issue.getContextId());
+    mongo.setContext(issue.getContext());
+    mongo.setK12n(issue.getK12n());
+    mongo.setSubject(issue.getSubject());
+    mongo.setType(issue.getType());
+    mongo.setDod(issue.getDod());
+    mongo.setQasQuestion(issue.getQasQuestion());
+    mongo.setQasOptions(issue.getQasOptions());
+    mongo.setCreatedAt(issue.getCreatedAt());
+    mongo.setUpdatedAt(issue.getUpdatedAt());
+    mongo.setFromUrl(issue.getFromUrl());
+    mongo.setUserId(issue.getUserId());
+    mongo.setTags(issue.getTags());
+    
     return mongo;
   }
   
@@ -157,17 +185,45 @@ public class IssueConverter {
    * @return IssueEntity
    */
   public IssueEntity createIssueEntityFromElastic(IssueEntityElastic elastic) {
-    IssueEntity entity = new IssueEntity();
-    return entity;
+    IssueEntity issue = new IssueEntity();
+    issue.setContextId(elastic.getContextId());
+    issue.setContext(elastic.getContext());
+    issue.setK12n(elastic.getK12n());
+    issue.setSubject(elastic.getSubject());
+    issue.setType(elastic.getType());
+    issue.setDod(elastic.getDod());
+    issue.setQasQuestion(elastic.getQasQuestion());
+    issue.setQasOptions(elastic.getQasOptions());
+    issue.setCreatedAt(elastic.getCreatedAt());
+    issue.setUpdatedAt(elastic.getUpdatedAt());
+    issue.setFromUrl(elastic.getFromUrl());
+    issue.setUserId(elastic.getUserId());
+    issue.setTags(elastic.getTags());
+    
+    return issue;
   }
   
   /**
    * Convert IssueEntity to IssueEntityElastic.
-   * @param entity IssueEntity
+   * @param issue IssueEntity
    * @return IssueEntityElastic
    */
   public IssueEntityElastic createElasticFromIssueEntity(IssueEntity issue) {
-    IssueEntityElastic elastic = new IssueEntityElastic();
+    IssueEntityElastic elastic = new IssueEntityElastic();    
+    elastic.setContextId(issue.getContextId());
+    elastic.setContext(issue.getContext());
+    elastic.setK12n(issue.getK12n());
+    elastic.setSubject(issue.getSubject());
+    elastic.setType(issue.getType());
+    elastic.setDod(issue.getDod());
+    elastic.setQasQuestion(issue.getQasQuestion());
+    elastic.setQasOptions(issue.getQasOptions());
+    elastic.setCreatedAt(issue.getCreatedAt());
+    elastic.setUpdatedAt(issue.getUpdatedAt());
+    elastic.setFromUrl(issue.getFromUrl());
+    elastic.setUserId(issue.getUserId());
+    elastic.setTags(issue.getTags());
+    
     return elastic;
   }
   

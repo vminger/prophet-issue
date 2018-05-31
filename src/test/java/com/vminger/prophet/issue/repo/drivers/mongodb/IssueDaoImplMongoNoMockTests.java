@@ -4,6 +4,8 @@
 
 package com.vminger.prophet.issue.repo.drivers.mongodb;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +35,7 @@ public class IssueDaoImplMongoNoMockTests extends AbstractJUnit4SpringContextTes
   }
   
   @Test
-  public void testCreateEmptyIssue() throws Exception {
+  public void testCreateIssueEntityFromEmpty() throws Exception {
     
     IssueEntity issueEntity = new IssueEntity();
     
@@ -42,7 +44,7 @@ public class IssueDaoImplMongoNoMockTests extends AbstractJUnit4SpringContextTes
   }
   
   @Test
-  public void testCreateJsonInstanceIssue() throws Exception {
+  public void testCreateIssueEntityFromJsonInstance() throws Exception {
     
     String issueInstance = ""
         + "{\n"
@@ -65,11 +67,11 @@ public class IssueDaoImplMongoNoMockTests extends AbstractJUnit4SpringContextTes
         + "            \"answer\": \"0\"\n"
         + "          },\n"
         + "          {\n"
-        + "            \"option\": \"C. 2+2=2\",\n"
+        + "            \"option\": \"C. 2+2=3\",\n"
         + "            \"answer\": \"1\"\n"
         + "          },\n"
         + "          {\n"
-        + "            \"option\": \"D. 2+2=2\",\n"
+        + "            \"option\": \"D. 2+2=4\",\n"
         + "            \"answer\": \"0\"\n"
         + "          }\n"
         + "        ]\n"
@@ -82,6 +84,30 @@ public class IssueDaoImplMongoNoMockTests extends AbstractJUnit4SpringContextTes
         converter.createIssueEntityFromJson(issueInstance);
     
     repo.create(issueEntity);
+    
+  }
+  
+  @Test
+  public void testFindByIssueId() throws Exception {
+    
+    String id = "84993e0c-5c95-4de3-a197-75c342a1cf44";
+    
+    IssueEntity issueEntity = repo.findByIssueId(id);
+    
+    String jsonIssue = converter.createJsonFromIssueEntity(issueEntity);
+    
+    assertEquals(id, issueEntity.getContextId());
+  
+  }
+  
+  @Test
+  public void testDeleteByIssueId() throws Exception {
+    
+    String contextId = "84993e0c-5c95-4de3-a197-75c342a1cf44";
+    
+    String actual = repo.deleteByIssueId(contextId);
+    
+    assertEquals("AcknowledgedDeleteResult{deletedCount=1}", actual);
     
   }
   

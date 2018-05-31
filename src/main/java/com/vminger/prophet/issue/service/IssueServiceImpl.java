@@ -21,7 +21,7 @@ public class IssueServiceImpl implements IssueService {
   private static final Logger logger = LogManager.getLogger(IssueServiceImpl.class);
   
   @Autowired
-  private IssueDao dao;
+  private IssueDao repo;
 
   @Autowired
   IssueConverter converter;
@@ -44,9 +44,9 @@ public class IssueServiceImpl implements IssueService {
     
     try {
       
-      dao.create(issueEntity);
+      repo.create(issueEntity);
       
-      IssueEntity repoIssue = dao.findByIssueId(issueEntity.getContextId());
+      IssueEntity repoIssue = repo.findByIssueId(issueEntity.getContextId());
       result = converter.createJsonFromIssueEntity(repoIssue);
       
       logger.info("Create an issue successfully");
@@ -74,16 +74,23 @@ public class IssueServiceImpl implements IssueService {
    */
   @Override
   public String showIssue(String id) {
-    IssueEntity issueEntity;
+    
+    logger.debug("Start to show an issue with id = " + id);
+    
     String jsonInstance;
     
     try {
-      issueEntity = dao.findByIssueId(id);
+      IssueEntity issueEntity = repo.findByIssueId(id);
       jsonInstance = converter.createJsonFromIssueEntity(issueEntity);
+      logger.debug("Success to show an issue with id = " + id);
     } catch (Exception ex) {
-      jsonInstance = ex.getStackTrace().toString();
+      jsonInstance = ex.getMessage();
+      logger.error("Failed to show an issue with id = " + id);
+      logger.error(ex.getStackTrace().toString());
     }
-
+    
+    logger.debug("End to show an issue with id = " + id);
+    
     return jsonInstance;
   }
 
@@ -94,7 +101,7 @@ public class IssueServiceImpl implements IssueService {
     
     String result;
     try {
-      result = dao.update(issueEntity);
+      result = repo.update(issueEntity);
     } catch (Exception ex) {
       result = ex.getStackTrace().toString();
     }
@@ -110,13 +117,21 @@ public class IssueServiceImpl implements IssueService {
    */
   @Override
   public String deleteIssue(String id) {
+    
+    logger.debug("Start to delete an issue with id = " + id);
+    
     String result;
     
     try {
-      result = dao.deleteByIssueId(id);;
+      result = repo.deleteByIssueId(id);
+      logger.debug("Success to delete an issue with id = " + id);
     } catch (Exception ex) {
-      result = ex.getStackTrace().toString();
+      result = ex.getMessage();
+      logger.error("Failed to delete an issue with id = " + id);
+      logger.error(ex.getStackTrace().toString());
     }
+    
+    logger.debug("End to delete an issue with id = " + id);
     
     return result;
   }
@@ -132,7 +147,7 @@ public class IssueServiceImpl implements IssueService {
     String result;
     
     try {
-      issueEntities = dao.listIssues();
+      issueEntities = repo.listIssues();
       result = converter.createJsonFromIssueEntity(issueEntities);
     } catch (Exception ex) {
       result = ex.getStackTrace().toString();
@@ -152,7 +167,7 @@ public class IssueServiceImpl implements IssueService {
     String result;
     
     try {
-      issueEntities = dao.findByUserId(userId);
+      issueEntities = repo.findByUserId(userId);
       result = converter.createJsonFromIssueEntity(issueEntities);
     } catch (Exception ex) {
       result = ex.getStackTrace().toString();

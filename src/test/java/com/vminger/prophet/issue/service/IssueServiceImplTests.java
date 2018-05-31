@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest;import org.springframework.dao.support.DaoSupport;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
@@ -110,6 +110,43 @@ public class IssueServiceImplTests {
     verify(repo, times(1)).create(issueEntity);
     verify(repo, times(1)).findByIssueId(issueEntity.getContextId());
     verify(converter, times(1)).createJsonFromIssueEntity(issueEntity);
+    
+  }
+  
+  @Test
+  public void testShowIssue() throws Exception {
+
+    String id = "84993e0c-5c95-4de3-a197-75c342a1cf44";
+    IssueConverter issueConverter = new IssueConverter();
+    IssueEntity issueEntity = new IssueEntity();
+    String expected = issueConverter.createJsonFromIssueEntity(issueEntity);
+    
+    when(repo.findByIssueId(id)).thenReturn(issueEntity);
+    when(converter.createJsonFromIssueEntity(issueEntity))
+      .thenReturn(expected);
+    
+    String actual = service.showIssue(id);
+    
+    assertEquals(expected, actual);
+    
+    verify(repo, times(1)).findByIssueId(id);
+    verify(converter, times(1)).createJsonFromIssueEntity(issueEntity);
+    
+  }
+  
+  @Test
+  public void testDeleteIssue() throws Exception {
+    
+    String id = "84993e0c-5c95-4de3-a197-75c342a1cf44";
+    String result = "testDeleteIssue";
+    
+    when(repo.deleteByIssueId(id)).thenReturn(result);
+    
+    String actual = service.deleteIssue(id);
+    
+    verify(repo, times(1)).deleteByIssueId(id);
+    
+    assertEquals(result, actual);
     
   }
   

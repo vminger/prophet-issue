@@ -139,13 +139,17 @@ public class IssueController {
    */
   @RequestMapping(value = "/{id}",
       method = RequestMethod.GET,
-      produces = "application/json;charset=UTF-8")
+      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
   public String showIssue(@PathVariable String id) {
+    
+    logger.debug("Start to show and issue with id = " + id);
     
     String result = service.showIssue(id);
     
     String view = viewer.showIssueView(result);
+    
+    logger.debug("End to show and issue with id = " + id);
     
     return view;
   
@@ -157,15 +161,20 @@ public class IssueController {
    * @return view for show and issue
    */
   @RequestMapping(value = "/{id}",
-      method = RequestMethod.POST,
-      consumes = "application/json;charset=UTF-8",
-      produces = "application/json;charset=UTF-8")
+      method = RequestMethod.PUT,
+      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
   public String updateIssue(@PathVariable String id, @RequestBody String issueInstance) {
+    
+    logger.debug("Start to update an issue with id = " + id);
+    logger.debug(issueInstance);
     
     String result = service.updateIssue(issueInstance);
     
     String view = viewer.updateIssueView(result);
+    
+    logger.debug("End to update an issue with id = " + id);
     
     return view;
   
@@ -178,13 +187,17 @@ public class IssueController {
    */
   @RequestMapping(value = "/{id}",
       method = RequestMethod.DELETE,
-      produces = "application/json;charset=UTF-8")
+      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
   public String deleteIssue(@PathVariable String id) {
+    
+    logger.debug("Start to update an issue with id = " + id);
     
     String result = service.deleteIssue(id);
     
     String view = viewer.deleteIssueView(result);
+    
+    logger.debug("End to update an issue with id = " + id);
     
     return view;
   

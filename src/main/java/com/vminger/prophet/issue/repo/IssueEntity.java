@@ -161,6 +161,14 @@ public class IssueEntity implements Serializable, Comparable<IssueEntity> {
     this.fromUrl = fromUrl;
   }
  
+  public List<String> getTags() {
+    return tags;
+  }
+  
+  public void setTags(List<String> tags) {
+    this.tags = tags;
+  }
+  
   public void addTag(String tag) {
     tags.add(tag);
   }
@@ -173,20 +181,22 @@ public class IssueEntity implements Serializable, Comparable<IssueEntity> {
   public String toString() {
     
     String jsonQas = "[\n";
-    for (String keyQuestionId : qasQuestion.keySet()) {
-      jsonQas += "{\n";
-      jsonQas += "question_id:" + keyQuestionId + ",\n";
-      jsonQas += "question:" + qasQuestion.get(keyQuestionId) + "\n";
-      jsonQas += "options:[" + "\n";
-      Map<String, String> mapOptions = qasOptions.get(keyQuestionId);
-      for (String keyOption : mapOptions.keySet()) {
-        String valAnswer = mapOptions.get(keyOption);
+    if (qasQuestion != null) {
+      for (String keyQuestionId : qasQuestion.keySet()) {
         jsonQas += "{\n";
-        jsonQas += "option:" + keyOption + ",\n";
-        jsonQas += "answer:" + valAnswer + "\n";
-        jsonQas += "},\n";
+        jsonQas += "question_id:" + keyQuestionId + ",\n";
+        jsonQas += "question:" + qasQuestion.get(keyQuestionId) + "\n";
+        jsonQas += "options:[" + "\n";
+        Map<String, String> mapOptions = qasOptions.get(keyQuestionId);
+        for (String keyOption : mapOptions.keySet()) {
+          String valAnswer = mapOptions.get(keyOption);
+          jsonQas += "{\n";
+          jsonQas += "option:" + keyOption + ",\n";
+          jsonQas += "answer:" + valAnswer + "\n";
+          jsonQas += "},\n";
+        }
+        jsonQas += "]},\n";
       }
-      jsonQas += "]},\n";
     }
     jsonQas += "]";
     

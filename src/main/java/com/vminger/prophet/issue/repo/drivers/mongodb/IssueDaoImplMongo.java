@@ -125,9 +125,15 @@ public class IssueDaoImplMongo implements IssueDao {
   @Override
   public String deleteByIssueId(String id) {
     
+    logger.debug("Start to delete an issue by id = " + id);
+    
     Query query = new Query();
-    query.addCriteria(Criteria.where("context_id").is(id));
-    DeleteResult result = repo.remove(query, IssueEntity.class);
+    query.addCriteria(Criteria.where("_id").is(id));
+    DeleteResult result = repo.remove(query, IssueEntityMongo.class);
+    logger.debug("Result for delete an issue by id = " + id);
+    logger.debug(result.toString());
+    
+    logger.debug("End to delete an issue by id = " + id);
     
     return result.toString();
   }

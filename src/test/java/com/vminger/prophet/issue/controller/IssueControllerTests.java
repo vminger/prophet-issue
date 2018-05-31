@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -31,6 +32,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.vminger.prophet.issue.BaseIssueTests;
 import com.vminger.prophet.issue.ProphetIssueApplication;
+import com.vminger.prophet.issue.converter.IssueConverter;
+import com.vminger.prophet.issue.repo.IssueEntity;
 import com.vminger.prophet.issue.service.IssueService;
 import com.vminger.prophet.issue.viewer.IssueViewer;
 
@@ -248,6 +251,26 @@ public class IssueControllerTests extends BaseIssueTests {
   @Test
   public void testShowIssue() throws Exception {
     
+    String id = "84993e0c-5c95-4de3-a197-75c342a1cf44";
+    
+    IssueEntity issueEntity = new IssueEntity();
+    IssueConverter issueConverter = new IssueConverter();
+    String result = issueConverter.createJsonFromIssueEntity(issueEntity);
+    
+    IssueViewer issueViewer = new IssueViewer();
+    String view = issueViewer.showIssueView(result);
+    
+    when(service.showIssue(id)).thenReturn(result);
+    when(viewer.showIssueView(result)).thenReturn(view);
+    
+    mock.perform(get("/v1.0/issues/" + id)
+          .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+      .andExpect(status().isOk())
+      .andExpect(content().string(view));
+    
+    verify(service, times(1)).showIssue(id);
+    verify(viewer, times(1)).showIssueView(result);
+    
   }
   
   @Test
@@ -257,6 +280,22 @@ public class IssueControllerTests extends BaseIssueTests {
   
   @Test
   public void testDeleteIssue() throws Exception {
+    
+    String id = "84993e0c-5c95-4de3-a197-75c342a1cf44";
+    String result = "testDeleteIssue";
+    IssueViewer issueViewer = new IssueViewer();
+    String view = issueViewer.deleteIssueView(result);
+    
+    when(service.deleteIssue(id)).thenReturn(result);
+    when(viewer.deleteIssueView(result)).thenReturn(view);
+    
+    mock.perform(delete("/v1.0/issues/" + id)
+        .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+      .andExpect(status().isOk())
+      .andExpect(content().string(view));
+    
+    verify(service, times(1)).deleteIssue(id);
+    verify(viewer, times(1)).deleteIssueView(result);
     
   }
   
