@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -275,6 +276,64 @@ public class IssueControllerTests extends BaseIssueTests {
   
   @Test
   public void testUpdateIssue() throws Exception {
+    
+    String id = "76d42c7b-e5db-4fb8-b1f9-30216023ea9f";
+    String issueInstance = ""
+        + "{\n"
+        + "  \"issue_in_text\": {\n"
+        + "    \"context\": \"vimger test context\",\n"
+        + "    \"k12n\": \"111\",\n"
+        + "    \"subject\": \"111\",\n"
+        + "    \"dod\": 100,\n"
+        + "    \"type\": \"111\",\n"
+        + "    \"qas\": [\n"
+        + "      {\n"
+        + "        \"question\": \"which one is right?\",\n"
+        + "        \"options\": [\n"
+        + "          {\n"
+        + "            \"option\": \"A. 1+1=1\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"B. 1+1=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"C. 2+2=2\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"D. 2+2=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          }\n"
+        + "        ]\n"
+        + "      }\n"
+        + "    ]\n"
+        + "  }\n"
+        + "}";
+    
+    String result = "updateIssue";
+    String view = ""
+        + "{"
+        + "  \"issue_update_text\":"
+        + result
+        + "}";
+
+    when(service.updateIssue(id, issueInstance)).thenReturn(result);
+    when(viewer.updateIssueView(result)).thenReturn(view);
+
+    MvcResult mvcResult = mock.perform(put("/v1.0/issues/" + id)
+            .accept(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(issueInstance))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andReturn();
+
+    verify(service, times(1)).updateIssue(id, issueInstance);
+    verify(viewer, times(1)).updateIssueView(result);
+    
+    assertEquals(view, mvcResult.getResponse().getContentAsString());
     
   }
   

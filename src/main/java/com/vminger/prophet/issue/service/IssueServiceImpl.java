@@ -4,6 +4,8 @@
 
 package com.vminger.prophet.issue.service;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -95,13 +97,51 @@ public class IssueServiceImpl implements IssueService {
   }
 
   @Override
-  public String updateIssue(String issueInstance) {
-    IssueEntity issueEntity =
+  public String updateIssue(String id, String issueInstance) {
+    
+    IssueEntity patchIssueEntity =
         converter.createIssueEntityFromJson(issueInstance);
     
     String result;
     try {
-      result = repo.update(issueEntity);
+      
+      IssueEntity newIssueEntity = repo.findByIssueId(id);
+      
+      if (patchIssueEntity.getContext() != null) {
+        newIssueEntity.setContext(patchIssueEntity.getContext());
+      }
+      
+      if (patchIssueEntity.getK12n() != null) {
+        newIssueEntity.setK12n(patchIssueEntity.getK12n());
+      }
+      
+      if (patchIssueEntity.getSubject() != null) {
+        newIssueEntity.setSubject(patchIssueEntity.getSubject());
+      }
+      
+      if (patchIssueEntity.getType()  != null) {
+        newIssueEntity.setType(patchIssueEntity.getType());
+      }
+      
+      if (patchIssueEntity.getDod() != newIssueEntity.getDod()) {
+        newIssueEntity.setDod(patchIssueEntity.getDod());
+      }
+      
+      if (patchIssueEntity.getQasQuestion() != null) {
+        newIssueEntity.setQasQuestion(patchIssueEntity.getQasQuestion());
+      }
+      
+      if (patchIssueEntity.getQasOptions() != null) {
+        newIssueEntity.setQasOptions(patchIssueEntity.getQasOptions());
+      }
+      
+      if (patchIssueEntity.getUpdatedAt() != null) {
+        newIssueEntity.setUpdatedAt(patchIssueEntity.getUpdatedAt());
+      }
+      
+      // FIXME: userid, fromurl
+      
+      result = repo.update(newIssueEntity);
     } catch (Exception ex) {
       result = ex.getStackTrace().toString();
     }

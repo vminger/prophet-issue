@@ -170,7 +170,7 @@ public class IssueController {
     logger.debug("Start to update an issue with id = " + id);
     logger.debug(issueInstance);
     
-    String result = service.updateIssue(issueInstance);
+    String result = service.updateIssue(id, issueInstance);
     
     String view = viewer.updateIssueView(result);
     

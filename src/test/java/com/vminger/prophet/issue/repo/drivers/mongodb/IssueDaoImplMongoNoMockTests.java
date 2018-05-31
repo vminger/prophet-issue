@@ -101,6 +101,57 @@ public class IssueDaoImplMongoNoMockTests extends AbstractJUnit4SpringContextTes
   }
   
   @Test
+  public void testUpdate() throws Exception {
+    String id = "e27fad5b-7edd-463a-82da-0f3f967b20bc";
+    String patchIssueInstance = ""
+        + "{\n"
+        + "  \"issue_in_text\": {\n"
+        + "    \"context\": \"vimger test context new\",\n"
+        + "    \"k12n\": \"111\",\n"
+        + "    \"subject\": \"111\",\n"
+        + "    \"dod\": 100,\n"
+        + "    \"type\": \"111\",\n"
+        + "    \"qas\": [\n"
+        + "      {\n"
+        + "        \"question\": \"which one is right?\",\n"
+        + "        \"options\": [\n"
+        + "          {\n"
+        + "            \"option\": \"A. 1+1=1\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"B. 1+1=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"C. 2+2=2\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"D. 2+2=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          }\n"
+        + "        ]\n"
+        + "      }\n"
+        + "    ]\n"
+        + "  }\n"
+        + "}";
+    
+    IssueConverter issueConverter = new IssueConverter();
+    
+    IssueEntity issueEntity =
+        issueConverter.createIssueEntityFromJson(patchIssueInstance);
+    
+    issueEntity.setContextId(id);
+    
+    String actual = repo.update(issueEntity);
+    String expected = "";
+    
+    assertEquals(expected, actual);
+    
+  }
+  
+  @Test
   public void testDeleteByIssueId() throws Exception {
     
     String contextId = "84993e0c-5c95-4de3-a197-75c342a1cf44";

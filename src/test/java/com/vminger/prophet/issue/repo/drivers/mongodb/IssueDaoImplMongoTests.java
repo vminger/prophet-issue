@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bson.BsonValue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +24,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.repo.IssueEntity;
@@ -102,6 +105,102 @@ public class IssueDaoImplMongoTests {
     List<IssueEntity> issueEntities = repo.findByUserId(userId);
     
     assertEquals(issueEntities, null);
+  }
+  
+  @Test
+  public void testUpdate() throws Exception {
+    
+    String id = "76d42c7b-e5db-4fb8-b1f9-30216023ea9f";
+    String patchIssueInstance = ""
+        + "{\n"
+        + "  \"issue_in_text\": {\n"
+        + "    \"context\": \"vimger test context new\",\n"
+        + "    \"k12n\": \"111\",\n"
+        + "    \"subject\": \"111\",\n"
+        + "    \"dod\": 100,\n"
+        + "    \"type\": \"111\",\n"
+        + "    \"qas\": [\n"
+        + "      {\n"
+        + "        \"question\": \"which one is right?\",\n"
+        + "        \"options\": [\n"
+        + "          {\n"
+        + "            \"option\": \"A. 1+1=1\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"B. 1+1=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"C. 2+2=2\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"D. 2+2=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          }\n"
+        + "        ]\n"
+        + "      }\n"
+        + "    ]\n"
+        + "  }\n"
+        + "}";
+    
+    IssueConverter issueConverter = new IssueConverter();
+    
+    IssueEntity issueEntity =
+        issueConverter.createIssueEntityFromJson(patchIssueInstance);
+    
+    IssueEntityMongo mongo =
+        issueConverter.createMongoFromIssueEntity(issueEntity);
+    
+    UpdateResult result = new UpdateResult() {
+      
+      @Override
+      public boolean wasAcknowledged() {
+        // TODO Auto-generated method stub
+        return false;
+      }
+      
+      @Override
+      public boolean isModifiedCountAvailable() {
+        // TODO Auto-generated method stub
+        return false;
+      }
+      
+      @Override
+      public BsonValue getUpsertedId() {
+        // TODO Auto-generated method stub
+        return null;
+      }
+      
+      @Override
+      public long getModifiedCount() {
+        // TODO Auto-generated method stub
+        return 0;
+      }
+      
+      @Override
+      public long getMatchedCount() {
+        // TODO Auto-generated method stub
+        return 0;
+      }
+    };
+        
+    Query query = new Query();
+    query.addCriteria(Criteria.where("_id").is(id));
+    Update update = Update.update("issue_entity", mongo);
+    
+    when(template.updateFirst(query, update, IssueEntityMongo.class))
+      .thenReturn(result);
+    
+    when(converter.createMongoFromIssueEntity(issueEntity)).thenReturn(mongo);
+    
+    String actual = repo.update(issueEntity);
+    
+    String expected = "";
+    
+    assertEquals(expected, actual);
+    
   }
   
   @Test

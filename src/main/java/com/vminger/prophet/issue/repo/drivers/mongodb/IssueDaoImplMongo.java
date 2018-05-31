@@ -102,12 +102,15 @@ public class IssueDaoImplMongo implements IssueDao {
   @Override
   public String update(IssueEntity issueEntity) {
     
-    String contextId = issueEntity.getContextId();
-    Query query = new Query();
-    query.addCriteria(Criteria.where("context_id").is(contextId));
+    IssueEntityMongo mongo =
+        converter.createMongoFromIssueEntity(issueEntity);
     
-    Update update = Update.update("issue_entity", issueEntity);
-    UpdateResult result = repo.upsert(query, update, IssueEntity.class);
+    String contextId = mongo.getContextId();
+    Query query = new Query();
+    query.addCriteria(Criteria.where("_id").is(contextId));
+    
+    Update update = Update.update("issue_entity", mongo);
+    UpdateResult result = repo.upsert(query, update, IssueEntityMongo.class);
     
     return result.toString();
   }

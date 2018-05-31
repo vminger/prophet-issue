@@ -10,7 +10,7 @@ public interface IssueService {
   
   public String showIssue(String id);
   
-  public String updateIssue(String issueInstance);
+  public String updateIssue(String id, String issueInstance);
   
   public String deleteIssue(String id);
   

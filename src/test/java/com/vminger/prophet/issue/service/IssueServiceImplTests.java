@@ -135,6 +135,99 @@ public class IssueServiceImplTests {
   }
   
   @Test
+  public void testUpdateIssue() throws Exception {
+    
+    String id = "76d42c7b-e5db-4fb8-b1f9-30216023ea9f";
+    String patchIssueInstance = ""
+        + "{\n"
+        + "  \"issue_in_text\": {\n"
+        + "    \"context\": \"vimger test context new\",\n"
+        + "    \"k12n\": \"111\",\n"
+        + "    \"subject\": \"111\",\n"
+        + "    \"dod\": 100,\n"
+        + "    \"type\": \"111\",\n"
+        + "    \"qas\": [\n"
+        + "      {\n"
+        + "        \"question\": \"which one is right?\",\n"
+        + "        \"options\": [\n"
+        + "          {\n"
+        + "            \"option\": \"A. 1+1=1\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"B. 1+1=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"C. 2+2=2\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"D. 2+2=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          }\n"
+        + "        ]\n"
+        + "      }\n"
+        + "    ]\n"
+        + "  }\n"
+        + "}";
+    String newIssueInstance = ""
+        + "{\n"
+        + "  \"issue_in_text\": {\n"
+        + "    \"context\": \"vimger test context old\",\n"
+        + "    \"k12n\": \"111\",\n"
+        + "    \"subject\": \"111\",\n"
+        + "    \"dod\": 100,\n"
+        + "    \"type\": \"111\",\n"
+        + "    \"qas\": [\n"
+        + "      {\n"
+        + "        \"question\": \"which one is right?\",\n"
+        + "        \"options\": [\n"
+        + "          {\n"
+        + "            \"option\": \"A. 1+1=1\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"B. 1+1=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"C. 2+2=2\",\n"
+        + "            \"answer\": \"1\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"option\": \"D. 2+2=2\",\n"
+        + "            \"answer\": \"0\"\n"
+        + "          }\n"
+        + "        ]\n"
+        + "      }\n"
+        + "    ]\n"
+        + "  }\n"
+        + "}";
+    String result = "updateIssue";
+    
+    IssueConverter issueConverter = new IssueConverter();
+    IssueEntity patchIssueEntity =
+        issueConverter.createIssueEntityFromJson(patchIssueInstance);
+    IssueEntity newIssueEntity =
+        issueConverter.createIssueEntityFromJson(newIssueInstance);
+    
+    when(converter.createIssueEntityFromJson(patchIssueInstance))
+      .thenReturn(patchIssueEntity);
+    when(repo.findByIssueId(id)).thenReturn(newIssueEntity);
+    when(repo.update(newIssueEntity)).thenReturn(result);
+    
+    String actual = service.updateIssue(id, patchIssueInstance);
+    
+    assertEquals(result, actual);
+    
+    verify(converter, times(1)).createIssueEntityFromJson(patchIssueInstance);
+    verify(repo, times(1)).findByIssueId(id);
+    verify(repo, times(1)).update(newIssueEntity);
+    
+  }
+  
+  @Test
   public void testDeleteIssue() throws Exception {
     
     String id = "84993e0c-5c95-4de3-a197-75c342a1cf44";
