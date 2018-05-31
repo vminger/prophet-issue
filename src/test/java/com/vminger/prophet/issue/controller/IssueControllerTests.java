@@ -246,6 +246,21 @@ public class IssueControllerTests extends BaseIssueTests {
   }
   
   @Test
+  public void testShowIssue() throws Exception {
+    
+  }
+  
+  @Test
+  public void testUpdateIssue() throws Exception {
+    
+  }
+  
+  @Test
+  public void testDeleteIssue() throws Exception {
+    
+  }
+  
+  @Test
   public void testListIssues() throws Exception {
     String result = "test";
     String expected = ""
@@ -265,6 +280,12 @@ public class IssueControllerTests extends BaseIssueTests {
     
     verify(service, times(1)).listIssues();
     verify(viewer,times(1)).listIssuesView(result);
+    
+  }
+  
+  
+  @Test
+  public void testListIssuesByUserId() throws Exception {
     
   }
 

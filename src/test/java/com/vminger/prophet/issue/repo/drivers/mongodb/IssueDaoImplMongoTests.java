@@ -2,7 +2,7 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue.dao;
+package com.vminger.prophet.issue.repo.drivers.mongodb;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
@@ -24,18 +24,22 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
+import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.repo.IssueEntity;
 import com.vminger.prophet.issue.repo.drivers.mongodb.IssueDaoImplMongo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
-public class IssueDaoImplTests {
+public class IssueDaoImplMongoTests {
 
   @Mock
   MongoTemplate template;
   
+  @Mock
+  IssueConverter converter;
+  
   @InjectMocks
-  IssueDaoImplMongo issueDaoImpl;
+  IssueDaoImplMongo repo;
   
   @Before
   public void setUp() {
@@ -43,32 +47,41 @@ public class IssueDaoImplTests {
   }
   
   @Test
-  public void testInsert() throws Exception {
+  public void testCreate1() throws Exception {
+    
     IssueEntity issueEntity = new IssueEntity();
-    issueDaoImpl.create(issueEntity);
-    verify(template, times(1)).insert(issueEntity);
+    IssueEntityMongo issueEntityMongo = new IssueEntityMongo();
+    
+    when(converter.createMongoFromIssueEntity(issueEntity))
+      .thenReturn(issueEntityMongo);
+    
+    repo.create(issueEntity);
+    
+    verify(converter, times(1)).createMongoFromIssueEntity(issueEntity);
+    verify(template, times(1)).insert(issueEntityMongo);
+    
   }
   
   @Test
-  public void testInsertAll() throws Exception {
+  public void testCreate2() throws Exception {
     List<IssueEntity> issueEntities = new LinkedList<IssueEntity>();
     IssueEntity issueEntity = new IssueEntity();
     issueEntities.add(issueEntity);
-    issueDaoImpl.create(issueEntities);
+    repo.create(issueEntities);
     verify(template, times(1)).insertAll(issueEntities);
   }
   
   @Test
   public void testDelete() throws Exception {
     IssueEntity issueEntity = new IssueEntity();
-    issueDaoImpl.delete(issueEntity);
+    repo.delete(issueEntity);
     verify(template, times(1)).remove(issueEntity);
   }
   
   @Test
   public void testDeleteById() throws Exception {
     String contextId = "b15de281-5868-4992-b918-63d582e69ecb";
-    issueDaoImpl.deleteByIssueId(contextId);
+    repo.deleteByIssueId(contextId);
   }
   
   @Test
@@ -77,7 +90,7 @@ public class IssueDaoImplTests {
     IssueEntity issueEntity = new IssueEntity();
     when(template.findById(contextId, IssueEntity.class)).thenReturn(issueEntity);
     
-    IssueEntity retEntity = issueDaoImpl.findByIssueId(contextId);
+    IssueEntity retEntity = repo.findByIssueId(contextId);
     assertEquals(retEntity, issueEntity);
   }
   
@@ -85,7 +98,7 @@ public class IssueDaoImplTests {
   public void testFindByUserId() throws Exception {
     String userId = "85fd2f86-be41-4bd7-b34b-7139e90e1ad1";
     
-    List<IssueEntity> issueEntities = issueDaoImpl.findByUserId(userId);
+    List<IssueEntity> issueEntities = repo.findByUserId(userId);
     
     assertEquals(issueEntities, null);
   }
@@ -100,7 +113,7 @@ public class IssueDaoImplTests {
     
     when(template.findAll(IssueEntity.class)).thenReturn(expected);
     
-    List<IssueEntity> actual = issueDaoImpl.listIssues();
+    List<IssueEntity> actual = repo.listIssues();
     
     assertEquals(expected, actual);
   }

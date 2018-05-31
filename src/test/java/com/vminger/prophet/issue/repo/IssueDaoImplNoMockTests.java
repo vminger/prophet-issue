@@ -2,7 +2,7 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue.dao;
+package com.vminger.prophet.issue.repo;
 
 import static org.junit.Assert.assertEquals;
 

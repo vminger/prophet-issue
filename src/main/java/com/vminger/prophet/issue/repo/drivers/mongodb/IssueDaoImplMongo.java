@@ -7,6 +7,8 @@ package com.vminger.prophet.issue.repo.drivers.mongodb;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,6 +25,8 @@ import com.vminger.prophet.issue.repo.IssueEntity;
 @Repository
 public class IssueDaoImplMongo implements IssueDao {
   
+  private static final Logger logger = LogManager.getLogger(IssueDaoImplMongo.class);
+  
   @Autowired
   private MongoTemplate repo;
   
@@ -32,22 +36,35 @@ public class IssueDaoImplMongo implements IssueDao {
   @Override
   public void create(IssueEntity issue) throws Exception {
     
+    logger.debug("Start to create an issue in mongodb");
+    
     IssueEntityMongo mongo = converter.createMongoFromIssueEntity(issue);
     
     repo.insert(mongo);
     
+    logger.debug("End to create issues in mongodb");
+  
   }
 
   @Override
   public void create(List<IssueEntity> issues) throws Exception {
     
+    logger.debug("Start to create issues in mongodb");
+    
     List<IssueEntityMongo> mongos = new ArrayList<IssueEntityMongo>();
+    
     for (IssueEntity issue : issues) {
+      
       IssueEntityMongo mongo = converter.createMongoFromIssueEntity(issue);
+      
       mongos.add(mongo);
+      
     }
     
-    repo.insert(mongos, IssueEntity.class);
+    repo.insert(mongos, IssueEntityMongo.class);
+    
+    logger.debug("End to create issues in mongodb");
+    
   }
 
   @Override

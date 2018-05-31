@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.ldap.DataLdapTest;
 import org.springframework.stereotype.Service;
 
 import com.vminger.prophet.issue.converter.IssueConverter;
@@ -46,6 +45,7 @@ public class IssueServiceImpl implements IssueService {
     try {
       
       dao.create(issueEntity);
+      
       IssueEntity repoIssue = dao.findByIssueId(issueEntity.getContextId());
       result = converter.createJsonFromIssueEntity(repoIssue);
       

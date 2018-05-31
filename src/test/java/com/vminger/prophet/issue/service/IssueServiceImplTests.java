@@ -32,13 +32,13 @@ import com.vminger.prophet.issue.repo.IssueEntity;
 public class IssueServiceImplTests {
 
   @Mock
-  IssueDao issueDao;
+  IssueDao repo;
 
   @Mock
-  IssueConverter issueFactory;
+  IssueConverter converter;
   
   @InjectMocks
-  IssueServiceImpl issueServiceImpl;
+  IssueServiceImpl service;
 
   @Before
   public void before() {
@@ -50,7 +50,8 @@ public class IssueServiceImplTests {
   }
   
   @Test
-  public void testAddIssue() throws Exception {
+  public void testCreateIssue() throws Exception {
+    
     String issueInstance = ""
         + "{\n"
         + "  \"issues_in_text\": {\n"
@@ -85,19 +86,35 @@ public class IssueServiceImplTests {
         + "  }\n"
         + "}";
     
-    IssueEntity issueEntity = new IssueEntity();
-    when(issueFactory.createIssueEntityFromJson(issueInstance))
-        .thenReturn(issueEntity);
+    IssueConverter issueConverter = new IssueConverter();
     
-    String actual = issueServiceImpl.createIssue(issueInstance);
+    IssueEntity issueEntity =
+        issueConverter.createIssueEntityFromJson(issueInstance);
     
-    verify(issueFactory, times(1)).createIssueEntityFromJson(issueInstance);
+    String expected = issueConverter.createJsonFromIssueEntity(issueEntity);
     
-    assertEquals(issueInstance, actual);
+    when(converter.createIssueEntityFromJson(issueInstance))
+      .thenReturn(issueEntity);
+    
+    when(repo.findByIssueId(issueEntity.getContextId()))
+      .thenReturn(issueEntity);
+    
+    when(converter.createJsonFromIssueEntity(issueEntity))
+      .thenReturn(expected);
+    
+    String actual = service.createIssue(issueInstance);
+    
+    assertEquals(expected, actual);
+    
+    verify(converter, times(1)).createIssueEntityFromJson(issueInstance);
+    verify(repo, times(1)).create(issueEntity);
+    verify(repo, times(1)).findByIssueId(issueEntity.getContextId());
+    verify(converter, times(1)).createJsonFromIssueEntity(issueEntity);
+    
   }
   
   @Test
-  public void testListAllIssues() throws Exception {
+  public void testListIssues() throws Exception {
     List<IssueEntity> issueEntities = new LinkedList<IssueEntity>();
     IssueEntity issueEntity = new IssueEntity();
     issueEntity.setContextId("f597e7aa-bae8-407b-a77c-9dd0a09d7a72");
@@ -110,9 +127,9 @@ public class IssueServiceImplTests {
         + "\"context\":" + issueEntity.getContext()
         + "}";
     
-    when(issueDao.listIssues()).thenReturn(issueEntities);
-    when(issueFactory.createJsonFromIssueEntity(issueEntities)).thenReturn(expected);
-    String actual = issueServiceImpl.listIssues();
+    when(repo.listIssues()).thenReturn(issueEntities);
+    when(converter.createJsonFromIssueEntity(issueEntities)).thenReturn(expected);
+    String actual = service.listIssues();
     
     assertEquals(expected, actual);
   }
