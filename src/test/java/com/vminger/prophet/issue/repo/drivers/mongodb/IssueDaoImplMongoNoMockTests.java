@@ -102,7 +102,7 @@ public class IssueDaoImplMongoNoMockTests extends AbstractJUnit4SpringContextTes
   
   @Test
   public void testUpdate() throws Exception {
-    String id = "e27fad5b-7edd-463a-82da-0f3f967b20bc";
+    String id = "c08efceb-92f3-49d3-82f1-fa1a6c9468ca";
     String patchIssueInstance = ""
         + "{\n"
         + "  \"issue_in_text\": {\n"

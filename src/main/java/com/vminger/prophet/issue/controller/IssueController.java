@@ -165,10 +165,46 @@ public class IssueController {
       consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
-  public String updateIssue(@PathVariable String id, @RequestBody String issueInstance) {
+  public String updateIssue(@PathVariable String id,
+      @RequestBody String issueInstance)
+          throws IssueBadJsonException,
+          IssueProcessingException,
+          IssueIOException {
     
     logger.debug("Start to update an issue with id = " + id);
     logger.debug(issueInstance);
+    
+    try {
+      
+      ProcessingReport report = IssueJsonSchemaValidator.validateByPath(
+          IssueConstant.SCHEMA_ISSUE_IN_TEXT_PATH, issueInstance);
+      
+      if (!report.isSuccess()) {
+        
+        logger.error(report);
+        
+        String message = "";
+        Iterator<ProcessingMessage> iterator = report.iterator();
+        while (iterator.hasNext()) {
+          message += iterator.next().getMessage() + "\n";
+        }
+        
+        throw new IssueBadJsonException(message);
+      }
+      
+      logger.debug("Validate json instance sucessfully");
+      
+    } catch (ProcessingException ex) {
+      
+      logger.error(ex.getStackTrace());
+      throw new IssueProcessingException();
+      
+    } catch (IOException ex) {
+      
+      logger.error(ex.getStackTrace());
+      throw new IssueIOException();
+      
+    }
     
     String result = service.updateIssue(id, issueInstance);
     

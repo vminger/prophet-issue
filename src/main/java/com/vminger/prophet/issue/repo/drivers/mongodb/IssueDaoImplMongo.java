@@ -109,7 +109,48 @@ public class IssueDaoImplMongo implements IssueDao {
     Query query = new Query();
     query.addCriteria(Criteria.where("_id").is(contextId));
     
-    Update update = Update.update("issue_entity", mongo);
+    Update update = new Update();
+    
+    if (issueEntity.getContext() != null) {
+      update.set("context", issueEntity.getContext());
+    }
+
+    if (issueEntity.getK12n() != null) {
+      update.set("k12n", issueEntity.getK12n());
+    }
+    
+    if (issueEntity.getSubject() != null) {
+      update.set("subject", issueEntity.getSubject());
+    }
+    
+    if (issueEntity.getDod() != 0) {
+      update.set("dod", issueEntity.getDod());
+    }
+    
+    if (issueEntity.getType() != null) {
+      update.set("type", issueEntity.getType());
+    }
+
+    if (issueEntity.getQasQuestion() != null) {
+      update.set("qas_questions", issueEntity.getQasQuestion());
+    }
+    
+    if (issueEntity.getQasOptions() != null) {
+      update.set("qas_options", issueEntity.getQasOptions());
+    }
+    
+    if (issueEntity.getUserId() != null) {
+      update.set("userid", issueEntity.getUserId());
+    }
+    
+    if (issueEntity.getFromUrl() != null) {
+      update.set("fromurl", issueEntity.getFromUrl());
+    }
+    
+    if (issueEntity.getTags() != null) {
+      update.set("tags", issueEntity.getTags());
+    }
+    
     UpdateResult result = repo.upsert(query, update, IssueEntityMongo.class);
     
     return result.toString();
