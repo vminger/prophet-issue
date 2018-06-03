@@ -5,6 +5,8 @@
 package com.vminger.prophet.issue.ai.drivers.cosmos;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,12 @@ public class IssueAiCosmos implements IssueAi {
     
     String data = generator.generateOcrJson(image);
     
-    String content = client.post(url, data);
+    String charset = "UTF-8";
+    
+    Map<String, String> headers = new HashMap<String, String>();
+    headers.put("Content-type", "application/json;charset=UTF-8");
+    
+    String content = client.post(url, headers, data, charset);
     
     OcrEntity ocrEntity = generator.generateOcrEntity(content);
     
@@ -49,7 +56,12 @@ public class IssueAiCosmos implements IssueAi {
     
     String data = generator.generateNlpJson(text);
     
-    String content = client.post(url, data);
+    String charset = "UTF-8";
+    
+    Map<String, String> headers = new HashMap<String, String>();
+    headers.put("Content-type", "application/json;charset=UTF-8");
+    
+    String content = client.post(url, headers, data, charset);
     
     NlpEntity nlpEntity = generator.generateNlpEntity(content);
     

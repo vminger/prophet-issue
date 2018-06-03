@@ -4,6 +4,12 @@
 
 package com.vminger.prophet.issue.ai;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class AiGenerator {
   
   /**
@@ -47,10 +53,27 @@ public class AiGenerator {
    */
   public OcrEntity generateOcrEntity(String content) {
     
-    // TODO
     OcrEntity ocrEntity = new OcrEntity();
     
+    JSONObject jsonRoot = new JSONObject(content);
+    
+    JSONObject jsonOcr = jsonRoot.getJSONObject("ocr");
+    
+    int count = jsonOcr.getInt("result_num");
+    ocrEntity.setCount(count);
+    
+    Map<String, Float> results = new HashMap<String, Float>();
+    JSONArray jsonResults = jsonOcr.getJSONArray("result");
+    for (int i = 0; i < jsonResults.length(); i++) {
+      JSONObject jsonResult = jsonResults.getJSONObject(i);
+      String text = jsonResult.getString("text");
+      float probility = jsonResult.getFloat("probability");
+      results.put(text, probility);
+    }
+    ocrEntity.setResult(results);
+    
     return ocrEntity;
+    
   }
   
   /**
@@ -60,8 +83,24 @@ public class AiGenerator {
    */
   public NlpEntity generateNlpEntity(String content) {
     
-    // TODO
     NlpEntity nlpEntity = new NlpEntity();
+    
+    JSONObject jsonRoot = new JSONObject(content);
+    
+    JSONObject jsonOcr = jsonRoot.getJSONObject("ocr");
+    
+    int count = jsonOcr.getInt("result_num");
+    nlpEntity.setCount(count);
+    
+    Map<String, Float> results = new HashMap<String, Float>();
+    JSONArray jsonResults = jsonOcr.getJSONArray("result");
+    for (int i = 0; i < jsonResults.length(); i++) {
+      JSONObject jsonResult = jsonResults.getJSONObject(i);
+      String text = jsonResult.getString("text");
+      float probility = jsonResult.getFloat("probability");
+      results.put(text, probility);
+    }
+    nlpEntity.setResult(results);
     
     return nlpEntity;
   }
