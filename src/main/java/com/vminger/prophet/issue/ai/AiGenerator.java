@@ -96,7 +96,7 @@ public class AiGenerator {
     JSONArray jsonResults = jsonOcr.getJSONArray("result");
     for (int i = 0; i < jsonResults.length(); i++) {
       JSONObject jsonResult = jsonResults.getJSONObject(i);
-      String text = jsonResult.getString("text");
+      String text = jsonResult.getString("word");
       float probility = jsonResult.getFloat("probability");
       results.put(text, probility);
     }
