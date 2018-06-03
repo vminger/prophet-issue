@@ -18,20 +18,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.repo.IssueEntity;
-import com.vminger.prophet.issue.repo.drivers.mongodb.IssueDaoImplMongo;
+import com.vminger.prophet.issue.repo.drivers.mongodb.IssueRepoMongo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
-public class IssueDaoImplMongoNoMockTests extends AbstractJUnit4SpringContextTests {
+public class IssueRepoMongoNoMockTests extends AbstractJUnit4SpringContextTests {
 
   @Autowired
-  IssueDaoImplMongo repo;
+  IssueRepoMongo repo;
   
   @Autowired
   IssueConverter converter;
   
   @Before
   public void before() {
+  }
+  
+  @After
+  public void after() {
   }
   
   @Test
@@ -160,10 +164,6 @@ public class IssueDaoImplMongoNoMockTests extends AbstractJUnit4SpringContextTes
     
     assertEquals("AcknowledgedDeleteResult{deletedCount=1}", actual);
     
-  }
-  
-  @After
-  public void after() {
   }
   
 }

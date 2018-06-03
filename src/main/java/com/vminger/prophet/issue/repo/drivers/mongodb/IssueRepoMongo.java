@@ -19,13 +19,13 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.vminger.prophet.issue.converter.IssueConverter;
-import com.vminger.prophet.issue.repo.IssueDao;
+import com.vminger.prophet.issue.repo.IssueRepo;
 import com.vminger.prophet.issue.repo.IssueEntity;
 
 @Repository
-public class IssueDaoImplMongo implements IssueDao {
+public class IssueRepoMongo implements IssueRepo {
   
-  private static final Logger logger = LogManager.getLogger(IssueDaoImplMongo.class);
+  private static final Logger logger = LogManager.getLogger(IssueRepoMongo.class);
   
   @Autowired
   private MongoTemplate repo;
@@ -42,7 +42,7 @@ public class IssueDaoImplMongo implements IssueDao {
     
     repo.insert(mongo);
     
-    logger.debug("End to create issues in mongodb");
+    logger.debug("End to create an issue in mongodb");
   
   }
 

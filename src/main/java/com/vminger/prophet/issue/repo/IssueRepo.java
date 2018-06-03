@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface IssueDao {
+public interface IssueRepo {
 
   /**
    * Create an issue.

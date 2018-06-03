@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.converter.IssueConverter;
-import com.vminger.prophet.issue.repo.IssueDao;
+import com.vminger.prophet.issue.repo.IssueRepo;
 import com.vminger.prophet.issue.repo.IssueEntity;
 
 @RunWith(SpringRunner.class)
@@ -32,7 +32,7 @@ import com.vminger.prophet.issue.repo.IssueEntity;
 public class IssueServiceImplTests {
 
   @Mock
-  IssueDao repo;
+  IssueRepo repo;
 
   @Mock
   IssueConverter converter;

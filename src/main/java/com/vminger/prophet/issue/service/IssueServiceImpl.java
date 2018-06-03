@@ -14,8 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vminger.prophet.issue.converter.IssueConverter;
-import com.vminger.prophet.issue.repo.IssueDao;
+import com.vminger.prophet.issue.repo.IssueRepo;
 import com.vminger.prophet.issue.repo.IssueEntity;
+import com.vminger.prophet.issue.repo.drivers.elasticsearch.IssueRepoElastic;
 
 @Service("issueServiceImpl")
 public class IssueServiceImpl implements IssueService {
@@ -23,7 +24,7 @@ public class IssueServiceImpl implements IssueService {
   private static final Logger logger = LogManager.getLogger(IssueServiceImpl.class);
   
   @Autowired
-  private IssueDao repo;
+  private IssueRepoElastic repo;
 
   @Autowired
   IssueConverter converter;

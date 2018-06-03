@@ -4,20 +4,24 @@
 
 package com.vminger.prophet.issue.ai;
 
-public interface AiBase {
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
+public interface IssueAi {
 
   /**
    * General OCR: character recognition.
    * @param image base64 image
    * @return text
    */
-  public String ocr_general(String image);
+  public OcrEntity ocrGeneral(String image) throws ClientProtocolException, IOException;
   
   /**
    * General NLP: word segmentation.
    * @param text text
    * @return words
    */
-  public String nlp_general(String text);
+  public NlpEntity nlpGeneral(String text) throws ClientProtocolException, IOException;
   
 }

@@ -25,17 +25,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.repo.IssueEntity;
-import com.vminger.prophet.issue.repo.drivers.mongodb.IssueDaoImplMongo;
+import com.vminger.prophet.issue.repo.drivers.mongodb.IssueRepoMongo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
-public class IssueDaoImplTests {
+public class IssueRepoTests {
 
   @Mock
   MongoTemplate template;
   
   @InjectMocks
-  IssueDaoImplMongo issueDaoImpl;
+  IssueRepoMongo issueDaoImpl;
   
   @Before
   public void setUp() {

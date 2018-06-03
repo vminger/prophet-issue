@@ -32,11 +32,11 @@ import com.mongodb.client.result.UpdateResult;
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.repo.IssueEntity;
-import com.vminger.prophet.issue.repo.drivers.mongodb.IssueDaoImplMongo;
+import com.vminger.prophet.issue.repo.drivers.mongodb.IssueRepoMongo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
-public class IssueDaoImplMongoTests {
+public class IssueRepoMongoTests {
 
   @Mock
   MongoTemplate template;
@@ -45,11 +45,15 @@ public class IssueDaoImplMongoTests {
   IssueConverter converter;
   
   @InjectMocks
-  IssueDaoImplMongo repo;
+  IssueRepoMongo repo;
   
   @Before
-  public void setUp() {
+  public void before() {
     MockitoAnnotations.initMocks(this);
+  }
+  
+  @After
+  public void after() {
   }
   
   @Test
@@ -255,10 +259,6 @@ public class IssueDaoImplMongoTests {
     List<IssueEntity> actual = repo.listIssues();
     
     assertEquals(expected, actual);
-  }
-  
-  @After
-  public void tearDown() {
   }
   
 }

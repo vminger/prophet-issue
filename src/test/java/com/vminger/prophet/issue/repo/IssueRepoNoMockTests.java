@@ -22,14 +22,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.vminger.prophet.issue.ProphetIssueApplication;
 import com.vminger.prophet.issue.converter.IssueConverter;
 import com.vminger.prophet.issue.repo.IssueEntity;
-import com.vminger.prophet.issue.repo.drivers.mongodb.IssueDaoImplMongo;
+import com.vminger.prophet.issue.repo.drivers.mongodb.IssueRepoMongo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProphetIssueApplication.class)
-public class IssueDaoImplNoMockTests extends AbstractJUnit4SpringContextTests {
+public class IssueRepoNoMockTests extends AbstractJUnit4SpringContextTests {
 
   @Autowired
-  IssueDaoImplMongo issueDao;
+  IssueRepoMongo issueDao;
   
   @Autowired
   IssueConverter issueFactory;

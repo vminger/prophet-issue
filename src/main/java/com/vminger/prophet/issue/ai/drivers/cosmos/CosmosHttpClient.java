@@ -2,7 +2,7 @@
  * Copyright ©2018 VMINGER Co., Ltd. All Rights Reserved.
  */
 
-package com.vminger.prophet.issue.util;
+package com.vminger.prophet.issue.ai.drivers.cosmos;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,14 +20,20 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import com.vminger.prophet.issue.util.HttpClientUtil;
+
 /**
  * Http Client Util.
  * @author Vminger
  *
  */
-public class HttpClientUtil {
+public class CosmosHttpClient extends HttpClientUtil {
   
-  public HttpClientUtil() {
+  public CosmosHttpClient() {
+    
+  }
+  
+  public void setUri(String uri) {
     
   }
   
@@ -38,6 +44,7 @@ public class HttpClientUtil {
    * @throws ClientProtocolException ClientProtocolException
    * @throws IOException IOException
    */
+  @Override
   public String get(String url) throws ClientProtocolException, IOException {
     
     RequestConfig requestConfig = RequestConfig.custom()
@@ -76,6 +83,7 @@ public class HttpClientUtil {
    * @throws ClientProtocolException ClientProtocolException
    * @throws IOException IOException
    */
+  @Override
   public String post(String url, String data)
       throws ClientProtocolException, IOException {
    
